@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
+import DisplayServerValidationErrors from "./DisplayServerValidationErrors";
 import {
   Box,
   Button,
@@ -44,6 +45,8 @@ const schema = yup.object({
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [serverErrors, setServerErrors] = useState([]);
+
   const API_URL =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_API_URL_PROD
@@ -82,6 +85,10 @@ const SignUp = () => {
           if (error.response && error.response.status === 409) {
             alert(error.response.data.message);
             handleReset();
+          } else if (error.response && error.response.status === 400) {
+            // Handle server-side validation errors
+            const validationErrors = error.response.data.errors;
+            setServerErrors(validationErrors);
           } else {
             console.error("Error:", error);
             alert(error.response.data.message);
@@ -95,6 +102,7 @@ const SignUp = () => {
   return (
     <>
       <Navbar page="signup" />
+      <DisplayServerValidationErrors errors={serverErrors} />
       <Paper elevation={24} className="paperstyle" sx={{ paddingRight: "0" }}>
         <Grid
           container
