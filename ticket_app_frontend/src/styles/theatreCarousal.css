@@ -1,0 +1,22 @@
+.outerdiv {
+  margin-top: 9vh;
+  width: 100%;
+}
+
+.innerdiv {
+  height: 50vh;
+}
+
+.about {
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  background-color: #a3a0a6;
+  color: #fff;
+}
+
+.footergrid {
+  background-color: #544f69;
+  color: #fff;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}

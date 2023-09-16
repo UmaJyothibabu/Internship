@@ -1,0 +1,53 @@
+const mongoose = require("mongoose");
+
+const rateSchema = mongoose.Schema({
+  seat_type: {
+    type: String,
+    requires: true,
+  },
+  rate: {
+    type: Number,
+    required: true,
+  },
+});
+
+const movieSchema = mongoose.Schema({
+  movie_name: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  languages: {
+    type: [String],
+    required: true,
+  },
+  cast: {
+    type: [String],
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  ticket_rates: {
+    type: [rateSchema],
+    required: true,
+  },
+  seat_count: {
+    type: Number,
+    required: true,
+  },
+  timing: {
+    type: [String],
+  },
+});
+
+const movieData = mongoose.model("movie", movieSchema);
+module.exports = movieData;
