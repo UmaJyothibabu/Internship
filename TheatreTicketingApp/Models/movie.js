@@ -11,6 +11,17 @@ const rateSchema = mongoose.Schema({
   },
 });
 
+const castSchema = mongoose.Schema({
+  actor: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+  },
+});
+
 const movieSchema = mongoose.Schema({
   movie_name: {
     type: String,
@@ -29,12 +40,18 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
   cast: {
-    type: [String],
+    type: [castSchema],
     required: true,
   },
   description: {
     type: String,
     required: true,
+  },
+  duration: {
+    type: String,
+  },
+  genre: {
+    type: [String],
   },
   ticket_rates: {
     type: [rateSchema],

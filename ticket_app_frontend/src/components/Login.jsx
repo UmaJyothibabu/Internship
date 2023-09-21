@@ -68,10 +68,8 @@ const Login = () => {
           sessionStorage.setItem("userId", userId);
           sessionStorage.setItem("username", username);
           alert(response.data.message);
-          if (role === "Admin") {
-            navigate("/admin");
-          } else if (role === "Customer") {
-            navigate("/customer");
+          if (role === "Admin" || role === "Customer") {
+            navigate("/dashboard");
           } else {
             alert("Database Error!!!");
           }

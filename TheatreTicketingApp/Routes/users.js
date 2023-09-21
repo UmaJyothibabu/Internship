@@ -64,7 +64,7 @@ router.post(
 // login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log(password);
+  // console.log(password);
   let user = await userData.findOne({ email: email });
 
   if (!user) res.json({ message: "User not found" });

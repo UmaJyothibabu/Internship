@@ -109,6 +109,7 @@ const SignUp = () => {
           justifyContent="center"
           alignItems="center"
           sx={{ height: "75vh" }}
+          // sx={{ height: "calc(100vh - 130px)" }}
         >
           <Grid item xs={11} sm={8} md={6} lg={6}>
             <Grid
@@ -214,6 +215,7 @@ const SignUp = () => {
                       padding: "1%",
                       marginTop: "2vh",
                       marginLeft: "2.4%",
+
                       fontSize: "1.1em",
                       backgroundColor: "#725A65",
                       "&:hover": {
@@ -257,6 +259,7 @@ const SignUp = () => {
               display: { xs: "none", md: "block" },
               backgroundColor: "#725A65",
               height: "100%",
+              paddingTop: "0",
             }}
           >
             <Grid
