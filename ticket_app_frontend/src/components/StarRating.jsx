@@ -23,11 +23,17 @@ const StarRating = ({ rating, role, token }) => {
 
     for (let i = 1; i <= MAX_STARS; i++) {
       if (i <= fullStars) {
-        stars.push(<StarRateIcon key={i} color="primary" />);
+        stars.push(
+          <StarRateIcon key={i} color="primary" sx={{ color: "#D13523" }} />
+        );
       } else if (halfStar && i === fullStars + 1) {
-        stars.push(<StarHalfIcon key={i} color="primary" />);
+        stars.push(
+          <StarHalfIcon key={i} color="primary" sx={{ color: "#D13523" }} />
+        );
       } else {
-        stars.push(<StarOutlineIcon key={i} color="primary" />);
+        stars.push(
+          <StarOutlineIcon key={i} color="primary" sx={{ color: "#D13523" }} />
+        );
       }
     }
 

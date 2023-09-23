@@ -1,0 +1,13 @@
+.outerGrid {
+  margin: 10vh auto;
+  width: 65vw !important;
+}
+
+.paperStyle {
+  width: 100%;
+}
+
+.fromStyle {
+  width: 100%;
+  margin: 0;
+}

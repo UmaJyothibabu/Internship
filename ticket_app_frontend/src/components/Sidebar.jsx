@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -24,8 +24,11 @@ import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import PersonIcon from "@mui/icons-material/Person";
 import MovieIcon from "@mui/icons-material/Movie";
-import { Grid, Tooltip } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Button, Grid, Paper, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
+import AddMovie from "./AddMovie";
 
 const drawerWidth = 240;
 
@@ -102,6 +105,7 @@ export default function Sidebar() {
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   const [userRole, setUserRole] = useState(sessionStorage.getItem("role"));
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
+  const [contentHeight, setContentHeight] = useState("100vh");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -112,209 +116,302 @@ export default function Sidebar() {
   };
   const navigate = useNavigate();
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" sx={{ backgroundColor: "#725A65" }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => setOpen(!open)}
-            edge="start"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Awesome Movies
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {(userRole === "Admin" || userRole === "Customer") && (
-            <ListItem
-              key={1}
-              disablePadding
-              sx={{ display: "block", my: 2 }}
-              onClick={() => {
-                if (menuData === "Dashboard") {
-                  window.location.reload();
-                } else setMenuData("Dashboard");
-              }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Tooltip title="Dashboard" arrow>
-                    <DashboardIcon sx={{ color: "#725A65" }} />
-                  </Tooltip>
-                </ListItemIcon>
-                <ListItemText
-                  primary="Dashboard"
-                  sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-          {userRole === "Admin" && (
-            <ListItem
-              key={2}
-              disablePadding
-              sx={{ display: "block", mb: 2 }}
-              onClick={() => setMenuData("AddMovie")}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Tooltip title="Add Movie">
-                    <MovieIcon sx={{ color: "#725A65" }} />
-                  </Tooltip>
-                </ListItemIcon>
-                <ListItemText
-                  primary="Add Movie"
-                  sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-          {userRole === "Customer" && (
-            <>
-              <ListItem
-                key={21}
-                disablePadding
-                sx={{ display: "block", mb: 2 }}
-                onClick={() => setMenuData("Bookings")}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Tooltip title="view Tickets">
-                      <BookOnlineIcon sx={{ color: "#725A65" }} />
-                    </Tooltip>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Booked Tickets"
-                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
-                  />
-                </ListItemButton>
-              </ListItem>
-              <ListItem
-                key={3}
-                disablePadding
-                sx={{ display: "block", mb: 2 }}
-                onClick={() => setMenuData("WriteReview")}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Tooltip title="Write Review">
-                      <RateReviewIcon sx={{ color: "#725A65" }} />
-                    </Tooltip>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Write Review"
-                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            </>
-          )}
+  useEffect(() => {
+    const mainContent = document.getElementById("main-content");
+    if (mainContent.scrollHeight > mainContent.clientHeight) {
+      setContentHeight(`${mainContent.scrollHeight}px`);
+    } else {
+      setContentHeight("100vh");
+    }
+  }, [menuData]);
 
-          {(userRole === "Customer" || userRole === "Admin") && (
-            <ListItem
-              key={4}
-              disablePadding
-              sx={{ display: "block", mb: 2 }}
-              onClick={() => setMenuData("Profile")}
+  return (
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <CssBaseline />
+      <Paper elevation={24}>
+        <AppBar position="fixed" sx={{ backgroundColor: "#725A65" }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpen(!open)}
+              edge="start"
             >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Awesome Movies
+            </Typography>
+
+            <Box sx={{ marginLeft: "auto" }}>
+              {userRole === "Admin" ? (
+                <Typography variant="subtitle1">
+                  <Button
+                    variant="outlined"
+                    sx={{ color: "#fff", borderColor: "#fff" }}
+                  >
+                    Admin
+                  </Button>
+                </Typography>
+              ) : (
+                <Typography variant="subtitle1">
+                  <Button
+                    variant="outlined"
+                    sx={{ color: "#fff", borderColor: "#fff" }}
+                  >
+                    Customer
+                  </Button>
+                </Typography>
+              )}
+            </Box>
+          </Toolbar>
+        </AppBar>
+
+        <Drawer variant="permanent" open={open} elevation={24}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {(userRole === "Admin" || userRole === "Customer") && (
+              <ListItem
+                key={1}
+                disablePadding
+                sx={{ display: "block", my: 2 }}
+                onClick={() => {
+                  if (menuData === "Dashboard") {
+                    window.location.reload();
+                  } else setMenuData("Dashboard");
                 }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  <Tooltip title="Profile">
-                    <PersonIcon sx={{ color: "#725A65" }} />
-                  </Tooltip>
-                </ListItemIcon>
-                <ListItemText
-                  primary="Profile"
-                  sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-        </List>
-        <Divider />
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1 }}>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Tooltip title="Dashboard" arrow>
+                      <DashboardIcon sx={{ color: "#725A65" }} />
+                    </Tooltip>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Dashboard"
+                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {userRole === "Admin" && (
+              <ListItem
+                key={2}
+                disablePadding
+                sx={{ display: "block", mb: 2 }}
+                onClick={() => setMenuData("AddMovie")}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Tooltip title="Add Movie">
+                      <MovieIcon sx={{ color: "#725A65" }} />
+                    </Tooltip>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Add Movie"
+                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {userRole === "Customer" && (
+              <>
+                <ListItem
+                  key={21}
+                  disablePadding
+                  sx={{ display: "block", mb: 2 }}
+                  onClick={() => setMenuData("Bookings")}
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="view Tickets">
+                        <BookOnlineIcon sx={{ color: "#725A65" }} />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Booked Tickets"
+                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem
+                  key={3}
+                  disablePadding
+                  sx={{ display: "block", mb: 2 }}
+                  onClick={() => setMenuData("WriteReview")}
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="Write Review">
+                        <RateReviewIcon sx={{ color: "#725A65" }} />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Write Review"
+                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            )}
+
+            {(userRole === "Customer" || userRole === "Admin") && (
+              <>
+                <ListItem
+                  key={4}
+                  disablePadding
+                  sx={{ display: "block", mb: 2 }}
+                  onClick={() => setMenuData("Profile")}
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="Profile">
+                        <PersonIcon sx={{ color: "#725A65" }} />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Profile"
+                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem
+                  key={5}
+                  disablePadding
+                  sx={{ display: "block", mb: 2 }}
+                  onClick={() => {
+                    sessionStorage.clear();
+                    navigate("/login");
+                  }}
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="Logout">
+                        <LogoutIcon sx={{ color: "#725A65" }} />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Logout"
+                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            )}
+          </List>
+          <Divider />
+        </Drawer>
+      </Paper>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, overflow: "auto" }}
+        id="main-content"
+      >
         {/* <DrawerHeader /> */}
         {menuData === "Dashboard" && (
           <Grid>
             <Dashboard
+              token={token}
+              username={username}
+              userId={userId}
+              role={userRole}
+            />
+          </Grid>
+        )}
+        {menuData === "Profile" && (
+          <Grid>
+            <Profile
+              token={token}
+              username={username}
+              userId={userId}
+              role={userRole}
+            />
+          </Grid>
+        )}
+        {menuData === "AddMovie" && (
+          <Grid>
+            <AddMovie
               token={token}
               username={username}
               userId={userId}

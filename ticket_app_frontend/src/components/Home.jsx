@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import TheatreCaurousal from "./TheatreCaurousal";
 import { Grid, Typography } from "@mui/material";
@@ -10,6 +10,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import axios from "axios";
 
 const Home = () => {
   return (

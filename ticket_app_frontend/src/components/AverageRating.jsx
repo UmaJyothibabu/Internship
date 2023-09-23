@@ -26,12 +26,12 @@ const AverageRating = ({ token, username, userId, role, movie }) => {
         textAlign: "center",
       }}
     >
-      <StarRateIcon />
+      <StarRateIcon sx={{ color: "#D13523" }} />
       <Typography
         gutterBottom
         variant="subtitle1"
         component="div"
-        sx={{ pt: 1, pl: 1 }}
+        sx={{ pt: 1, pl: 1, fontFamily: "'Tektur', cursive" }}
       >
         {avg}/5
       </Typography>

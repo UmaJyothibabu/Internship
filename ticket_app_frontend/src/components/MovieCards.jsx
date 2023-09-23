@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -9,8 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MovieCards = () => {
+  const [movielist, setMovieList] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/movie`).then((response) => {
+      setMovieList(response.data);
+      // if(response.data.message==="")
+    });
+  }, []);
+
   const movies = [
     { img: "/movie1.jpg", name: "Madhura Manohara Moham" },
     { img: "movie2.jpg", name: "RDX" },
@@ -25,7 +35,7 @@ const MovieCards = () => {
         justifyContent="center"
         alignItems="center"
       >
-        {movies.map((val, i) => {
+        {movielist.map((val, i) => {
           return (
             <Grid item xs={11} sm={11} md={6} lg={4} key={i}>
               <Card sx={{ maxWidth: 345, m: 3 }}>
@@ -33,7 +43,7 @@ const MovieCards = () => {
                   component="img"
                   alt="green iguana"
                   height="500"
-                  image={val.img}
+                  image={val.image}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">

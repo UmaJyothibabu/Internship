@@ -92,11 +92,14 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
           lg={7}
           sx={{ textAlign: "left", color: "#fff" }}
         >
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "bold", fontFamily: "'Tektur', cursive" }}
+          >
             {movie.movie_name}
           </Typography>
           <Grid
-            style={{
+            sx={{
               display: "flex",
               alignItems: "center",
               textAlign: "center",
@@ -109,13 +112,18 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
                 <Typography
                   variant="subtitle1"
                   gutterBottom
-                  sx={{ pt: 2, pl: 1 }}
+                  sx={{ pt: 2, pl: 1, fontFamily: "'Tektur', cursive" }}
                 >
                   {averageRating}/5
                 </Typography>
               </>
             ) : (
-              <Typography variant="subtitle1">No one reviewed</Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontFamily: "'Tektur', cursive" }}
+              >
+                No one reviewed
+              </Typography>
             )}
           </Grid>
           {movie.languages.map((val) => (
@@ -128,13 +136,17 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
                 color: "#000",
                 borderRadius: "10px",
                 my: 1,
+                fontFamily: "'Tektur', cursive",
               }}
             >
               {val}
             </Typography>
           ))}
 
-          <Typography variant="subtitle1">
+          <Typography
+            variant="subtitle1"
+            sx={{ fontFamily: "'Tektur', cursive" }}
+          >
             {movie.duration} {"\u00a0"}
             <CircleIcon sx={{ fontSize: "9px" }} />
             {"\u00a0"}
@@ -156,6 +168,7 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
               py: 1,
               backgroundColor: "#9A3F1D",
               "&:hover": { backgroundColor: "#D13523" },
+              fontFamily: "'Tektur', cursive",
             }}
             onClick={handleBookTicket}
           >
@@ -171,13 +184,24 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
         spacing={2}
       >
         <Grid item xs={11} sm={11} md={8} lg={8}>
-          <Typography variant="h5" sx={{ mb: 1 }}>
+          <Typography
+            variant="h4"
+            sx={{ mb: 1, fontFamily: "'Mate', serif", fontWeight: "bold" }}
+          >
             About the movie
           </Typography>
-          <Typography variant="subtitle1">{movie.description}</Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontFamily: "'Mate', serif", fontSize: "1.15rem" }}
+          >
+            {movie.description}
+          </Typography>
         </Grid>
-        <Grid xs={11} sm={11} md={4} lg={3} sx={{ textAlign: "center" }}>
-          <Typography variant="h5" sx={{ mb: 1 }}>
+        <Grid item xs={11} sm={11} md={4} lg={3} sx={{ textAlign: "center" }}>
+          <Typography
+            variant="h4"
+            sx={{ mb: 1, fontFamily: "'Mate', serif", fontWeight: "bold" }}
+          >
             Cast
           </Typography>
           {movie.cast.map((val, i) => {
@@ -185,7 +209,11 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
               <Typography
                 variant="subtitle1"
                 key={val.actor}
-                sx={{ fontWeight: "bold" }}
+                sx={{
+                  fontWeight: "bold",
+                  fontFamily: "'Mate', serif",
+                  fontSize: "1.2rem",
+                }}
               >
                 {val.actor} as {val.role}
               </Typography>
@@ -204,7 +232,11 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
           sx={{ pb: 3, mx: 1 }}
         >
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{ fontFamily: "'Mate', serif", fontWeight: "bold" }}
+            >
               Reviews
             </Typography>
           </Grid>
@@ -220,6 +252,7 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
               >
                 <Card
                   sx={{
+                    backgroundColor: "#E7E8EE",
                     transition: "transform 0.3s ease",
                     "&:hover": {
                       transform: "scale(1.03)", // Hide the image on hover
@@ -227,7 +260,11 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
                   }}
                 >
                   <CardContent sx={{ height: showFullReview ? "auto" : 200 }}>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      sx={{ fontFamily: "'Mate', serif", fontWeight: "bold" }}
+                    >
                       {review.user.name}
                     </Typography>
                     <StarRating rating={review.rating} role={role} />

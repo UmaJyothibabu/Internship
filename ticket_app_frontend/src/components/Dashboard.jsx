@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import MoviePage from "./MoviePage";
 import AverageRating from "./AverageRating";
+import UpdateMovie from "./UpdateMovie";
 // import Dashboard from "@mui/icons-material/Dashboard";
 
 const Dashboard = ({ token, username, userId, role }) => {
@@ -79,6 +80,14 @@ const Dashboard = ({ token, username, userId, role }) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  // editing movie timing/rate
+  const [openDialogue, setOpenDialogue] = useState(false);
+  const [updateMovie, setUpdateMovie] = useState({});
+  const handleOpen = (val) => {
+    setOpenDialogue(true);
+    setUpdateMovie(val);
   };
 
   return (
@@ -164,6 +173,7 @@ const Dashboard = ({ token, username, userId, role }) => {
                           fontSize: "1.17rem",
                           fontWeight: "bold",
                           color: "#45363C",
+                          fontFamily: "'Tektur', cursive",
                         }}
                         component="div"
                       >
@@ -177,7 +187,11 @@ const Dashboard = ({ token, username, userId, role }) => {
                             variant="subtitle1"
                             color="text.secondary"
                             key={i + 100}
-                            sx={{ color: "#45363C", fontWeight: "bold" }}
+                            sx={{
+                              color: "#45363C",
+                              fontWeight: "bold",
+                              fontFamily: "'Tektur', cursive",
+                            }}
                           >
                             {lang}
                           </Typography>
@@ -187,7 +201,11 @@ const Dashboard = ({ token, username, userId, role }) => {
                         gutterBottom
                         variant="body2"
                         component="div"
-                        sx={{ color: "#45363C", fontWeight: "bold" }}
+                        sx={{
+                          color: "#45363C",
+                          fontWeight: "bold",
+                          fontFamily: "'Tektur', cursive",
+                        }}
                       >
                         {val.category}
                       </Typography>
@@ -218,7 +236,11 @@ const Dashboard = ({ token, username, userId, role }) => {
                             <Button
                               size="medium"
                               variant="outlined"
-                              sx={{ px: 4, mr: 2 }}
+                              sx={{
+                                px: 4,
+                                mr: 2,
+                                fontFamily: "'Tektur', cursive",
+                              }}
                               onClick={() => {
                                 handleDelete(val._id);
                               }}
@@ -230,10 +252,26 @@ const Dashboard = ({ token, username, userId, role }) => {
                             <Button
                               size="medium"
                               variant="outlined"
-                              sx={{ px: 5, ml: 2 }}
+                              sx={{
+                                px: 5,
+                                ml: 2,
+                                fontFamily: "'Tektur', cursive",
+                              }}
+                              onClick={() => {
+                                handleOpen(val);
+                              }}
                             >
                               Edit
                             </Button>
+                            {openDialogue && (
+                              <UpdateMovie
+                                token={token}
+                                username={username}
+                                userId={userId}
+                                role={role}
+                                movie={updateMovie}
+                              />
+                            )}
                           </Grid>
                         </Grid>
                       </CardActions>

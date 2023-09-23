@@ -98,4 +98,58 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// get details of a user
+router.get("/userlist/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id :", id);
+    let user = await userData.findById(id);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "Unable to find" });
+    }
+  } catch (error) {
+    res.json({ message: "unable to find", err: error.message });
+  }
+});
+
+// checking enterd password is correct
+router.post("/oldpassword", async (req, res) => {
+  const { username, password } = req.body;
+  let user = await userData.findOne({ email: username });
+  try {
+    bcrypt.compare(password, user.password).then((result) => {
+      if (result) {
+        res.status(200).json({ message: "Correct Password" });
+      } else {
+        res.status(400).json({ message: "Incorrect Password" });
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ message: "Incorrect Password" });
+  }
+});
+
+// upadting new password
+router.put("/updatepassword/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    bcrypt
+      .hash(req.body.password, saltRounds)
+      .then(function (hash) {
+        // req.body.password = hash;
+        userData.findByIdAndUpdate(id, { $set: { password: hash } }).exec();
+        res.status(200).json({ message: "Password updated Successfully" });
+      })
+      .catch((err) => {
+        console.log("Hash not generated");
+      });
+  } catch (error) {
+    res.status(500).json({ message: "unable to update", err: error.message });
+  }
+});
+
 module.exports = router;

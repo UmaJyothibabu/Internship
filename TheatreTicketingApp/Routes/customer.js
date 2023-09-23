@@ -50,42 +50,6 @@ router.post("/reviews", async (req, res) => {
 });
 
 // getting reviews of a movie
-// router.get("/reviews/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     // finding the average rating
-//     const averageRatingPipeline = [
-//       { $match: { movie: id } },
-//       { $group: { _id: null, averageRating: { $avg: "$rating" } } },
-//     ];
-
-//     const [averageRatingResult] = await reviewData.aggregate([
-//       { $match: { movie: id } },
-//       { $group: { _id: id, averageRating: { $avg: "$rating" } } },
-//     ]);
-//     console.log(averageRatingResult);
-//     // finding movie reviews
-//     let reviews = await reviewData
-//       .find({ movie: id })
-//       .populate("user", "name", userData);
-
-//     // console.log("Review List:", reviews);
-//     if (reviews.length !== 0)
-//       res.status(200).json({
-//         reviews: reviews,
-//         averageRating: averageRatingResult
-//           ? averageRatingResult.averageRating
-//           : 0,
-//       });
-//     else res.status(200).res.json({ message: "No one reviewd the movie" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ message: "Something went wrong" });
-//   }
-// });
-
-// const mongoose = require("mongoose");
 
 router.get("/reviews/:id", async (req, res) => {
   try {
