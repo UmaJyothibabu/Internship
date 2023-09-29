@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const passwordUpdateSchema = Yup.object({
   currentPassword: Yup.string().required("Provide the current password"),
@@ -40,6 +41,17 @@ const Profile = ({ token, username, userId, role }) => {
   const [user, setUser] = useState({});
   const [changePwd, setChangePwd] = useState(false);
 
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_API_URL_PROD
+      : process.env.REACT_APP_API_URL_DEV;
+
+  const config = {
+    headers: {
+      authorization: " Bearer " + token,
+    },
+  };
+
   const {
     handleSubmit,
     register,
@@ -48,10 +60,11 @@ const Profile = ({ token, username, userId, role }) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(passwordUpdateSchema) });
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (token && (role === "Admin" || role === "Customer")) {
       axios
-        .get(`http://localhost:8000/api/userlist/${userId}`)
+        .get(`http://localhost:8000/api/userlist/${userId}`, config)
         .then((response) => {
           console.log(response.data);
           setUser(response.data);
@@ -59,6 +72,9 @@ const Profile = ({ token, username, userId, role }) => {
         .catch((error) => {
           if (error.response && error.response.status === 404) {
             alert(error.response.message);
+          } else if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+            navigate("/login");
           } else {
             console.error("Error:", error);
             alert(error.response.data.message);
@@ -75,15 +91,24 @@ const Profile = ({ token, username, userId, role }) => {
       username: user.email,
       password: e.target.value,
     };
+
     console.log(oldPassword);
     axios
-      .post(`http://localhost:8000/api/oldpassword`, oldPassword)
+      .post(`http://localhost:8000/api/oldpassword`, oldPassword, config)
       .then((response) => {
         if (response.data.message === "Correct Password") {
           setIsCorrect(true);
         } else if (response.data.message === "Incorrect Password") {
           setMessage(response.data.message);
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          alert(error.response.data.message);
+          navigate("/login");
+        }
+        alert("Something went wrong");
       });
   };
 
@@ -102,7 +127,11 @@ const Profile = ({ token, username, userId, role }) => {
     try {
       console.log(data.password);
       axios
-        .put(`http://localhost:8000/api/updatepassword/${user._id}`, data)
+        .put(
+          `http://localhost:8000/api/updatepassword/${user._id}`,
+          data,
+          config
+        )
         .then((response) => {
           if (response.data.message === "Password updated Successfully") {
             alert(response.data.message);
@@ -114,6 +143,9 @@ const Profile = ({ token, username, userId, role }) => {
         .catch((error) => {
           if (error.response && error.response.status === 500) {
             alert(error.response.message);
+          } else if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+            navigate("/login");
           } else {
             console.error("Error:", error);
             alert(error.response.data.message);

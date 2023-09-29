@@ -17,6 +17,7 @@ const PORT = process.env.PORT;
 const accountApi = require("./Routes/users");
 const customerApi = require("./Routes/customer");
 const adminApi = require("./Routes/admin");
+app.use("/uploads", express.static("uploads"));
 
 app.use("/api", accountApi); //routes for login and sign up
 app.use("/api", adminApi); //routes handling admin activities

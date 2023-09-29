@@ -10,13 +10,13 @@ const TheatreCaurousal = () => {
     >
       <div className="carousel-inner innerdiv">
         <div className="carousel-item active">
-          <img src="/mt1.jpg" className="d-block w-100" alt="..." />
+          <img src="/mt1.jpg" className="d-block w-100 " alt="..." />
         </div>
         <div className="carousel-item">
-          <img src="/mt3.jpg" className="d-block w-100" alt="..." />
+          <img src="/mt3.jpg" className="d-block w-100 " alt="..." />
         </div>
         <div className="carousel-item">
-          <img src="/mt4.jpg" className="d-block w-100" alt="..." />
+          <img src="/mt4.jpg" className="d-block w-100 " alt="..." />
         </div>
       </div>
       <button

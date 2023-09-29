@@ -11,8 +11,19 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check if the user is already authenticated (e.g., by checking the user token in sessionStorage)
+    const isAuthenticated = !!sessionStorage.getItem("userToken");
+
+    // If the user is authenticated, replace the current history state with the dashboard page's URL
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
   return (
     <>
       <Navbar page="home" />
@@ -23,9 +34,9 @@ const Home = () => {
         alignItems="center"
         textAlign="center"
       >
-        <Grid item xs={6}>
+        {/* <Grid item xs={2}>
           <Grid>
-            <img src="/AwesomeLogo.png" alt="logo" />
+            <img src="/AwesomeLogo.png" alt="logo" width="100%" />
           </Grid>
           <Typography
             variant="h5"
@@ -33,9 +44,15 @@ const Home = () => {
           >
             The perfect movie destination
           </Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Grid> */}
+        <Grid item xs={12}>
           <TheatreCaurousal />
+        </Grid>
+        <Grid item xs={11} sx={{ p: 5 }}>
+          <Typography variant="h4" gutterBottom sx={{ color: "#7E2E84" }}>
+            Running Housefully
+          </Typography>
+          <MovieCards />
         </Grid>
         <Grid item xs={12} className="about">
           <Grid
@@ -44,7 +61,7 @@ const Home = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
               <Typography
                 variant="h3"
                 gutterBottom
@@ -55,6 +72,8 @@ const Home = () => {
               >
                 About us......
               </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} md={7} lg={7}>
               <Typography
                 variant="body1"
                 sx={{
@@ -85,12 +104,7 @@ const Home = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={11} sx={{ p: 5 }}>
-          <Typography variant="h4" gutterBottom sx={{ color: "#7E2E84" }}>
-            Running Housefully
-          </Typography>
-          <MovieCards />
-        </Grid>
+
         <Grid item xs={12} className="footergrid">
           <Grid
             container

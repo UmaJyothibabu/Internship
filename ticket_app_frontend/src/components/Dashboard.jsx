@@ -11,12 +11,14 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
+  Popover,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MoviePage from "./MoviePage";
 import AverageRating from "./AverageRating";
 import UpdateMovie from "./UpdateMovie";
+import TicketTable from "./TicketTable";
 // import Dashboard from "@mui/icons-material/Dashboard";
 
 const Dashboard = ({ token, username, userId, role }) => {
@@ -24,6 +26,9 @@ const Dashboard = ({ token, username, userId, role }) => {
   let [movies, setMovies] = useState([]);
   let [deleted, setDeleted] = useState(false);
   // const [avg, setAvg] = useState();
+  let [openDialogue, setOpenDialogue] = useState(false);
+  const [updateMovie, setUpdateMovie] = useState({});
+  const [imgUrl, setImgUrl] = useState("");
 
   const navigate = useNavigate();
   const API_URL =
@@ -31,28 +36,38 @@ const Dashboard = ({ token, username, userId, role }) => {
       ? process.env.REACT_APP_API_URL_PROD
       : process.env.REACT_APP_API_URL_DEV;
 
+  const config = {
+    headers: {
+      authorization: " Bearer " + token,
+    },
+  };
+
   // loading info from db when the page loads
   useEffect(() => {
     if (token && (role === "Admin" || role === "Customer")) {
       axios
-        .get(`http://localhost:8000/api/movie`)
+        .get(`http://localhost:8000/api/movie`, config)
         .then((response) => {
           if (response.data.message === "No movies to show") {
             alert(response.data.message);
           } else {
-            setMovies(response.data);
+            setMovies(response.data.movies);
+            setImgUrl(response.data.imgUrl);
           }
           setLoading(false);
         })
-        .catch((err) => {
-          console.log(err);
-          alert("Unable to load data");
+        .catch((error) => {
+          console.log(error);
+          if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+            navigate("/login");
+          }
         });
     } else {
       alert("Access denied");
       navigate("/login");
     }
-  }, [deleted, role, navigate]);
+  }, [deleted, openDialogue, role, navigate, token]);
   const [singleMovie, setSingleMovie] = useState({});
   const [navigateToMovie, setNavigateToMovie] = useState(false);
 
@@ -67,7 +82,7 @@ const Dashboard = ({ token, username, userId, role }) => {
     setDeleted(false);
     axios
 
-      .delete(`http://localhost:8000/api/movie/${id}`)
+      .delete(`http://localhost:8000/api/movie/${id}`, config)
       .then((response) => {
         if (response.data.message === "Movie deleted successfully") {
           alert("Movie deleted successfully");
@@ -79,15 +94,35 @@ const Dashboard = ({ token, username, userId, role }) => {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response && error.response.status === 401) {
+          alert(error.response.data.message);
+          navigate("/login");
+        }
+        alert("Something went wrong");
       });
   };
 
   // editing movie timing/rate
-  const [openDialogue, setOpenDialogue] = useState(false);
-  const [updateMovie, setUpdateMovie] = useState({});
+
   const handleOpen = (val) => {
     setOpenDialogue(true);
     setUpdateMovie(val);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialogue(false);
+  };
+
+  const [singleMovieTicket, setSingleMovieTicket] = useState({});
+  const [showTable, setShowTable] = useState(false);
+
+  const handleTicketCount = (movie) => {
+    setSingleMovieTicket(movie);
+    setShowTable(true);
+  };
+
+  const handleCloseTable = () => {
+    setShowTable(false);
   };
 
   return (
@@ -98,7 +133,8 @@ const Dashboard = ({ token, username, userId, role }) => {
           username={username}
           userId={userId}
           role={role}
-          movie={singleMovie}
+          movie={{ ...singleMovie, imgUrl: imgUrl }}
+          // imgurl={imgUrl}
         />
       ) : (
         <Box sx={{ flexGrow: 1, margin: "15vh 5vw" }}>
@@ -137,7 +173,7 @@ const Dashboard = ({ token, username, userId, role }) => {
                       }}
                     >
                       <img
-                        src={val.image}
+                        src={imgUrl + val.image}
                         alt={val.movie_name}
                         style={{
                           width: "100%",
@@ -219,13 +255,31 @@ const Dashboard = ({ token, username, userId, role }) => {
                             movie={val._id}
                           />
 
-                          <Typography
+                          {/* <Typography
                             gutterBottom
-                            variant="body2"
+                            variant="subtitle1"
                             component="div"
+                            sx={{ fontWeight: "bold" }}
                           >
-                            tickets per day
-                          </Typography>
+                            Tickets sold
+                          </Typography> */}
+                          <Button
+                            variant="text"
+                            sx={{ color: "#C76B71", fontWeight: "bold" }}
+                            onClick={(event) => handleTicketCount(val, event)}
+                          >
+                            Tickets sold
+                          </Button>
+                          {showTable && (
+                            <TicketTable
+                              token={token}
+                              username={username}
+                              userId={userId}
+                              role={role}
+                              movie={singleMovieTicket}
+                              onCloseDialog={handleCloseTable}
+                            />
+                          )}
                         </>
                       )}
                     </CardContent>
@@ -270,6 +324,7 @@ const Dashboard = ({ token, username, userId, role }) => {
                                 userId={userId}
                                 role={role}
                                 movie={updateMovie}
+                                onCloseDialog={handleCloseDialog}
                               />
                             )}
                           </Grid>

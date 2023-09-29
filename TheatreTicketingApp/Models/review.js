@@ -6,10 +6,12 @@ const reviewSchema = mongoose.Schema({
   movie: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "movies",
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users", // Reference to the User model
+    required: true,
   },
   review: String,
   rating: Number,

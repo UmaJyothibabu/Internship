@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
-const rateSchema = mongoose.Schema({
-  seat_type: {
-    type: String,
-    requires: true,
-  },
-  rate: {
-    type: Number,
-    required: true,
-  },
-});
+// const rateSchema = mongoose.Schema({
+//   seat_type: {
+//     type: String,
+//     requires: true,
+//   },
+//   rate: {
+//     type: Number,
+//     required: true,
+//   },
+// });
 
 const castSchema = mongoose.Schema({
   actor: {
@@ -54,7 +54,7 @@ const movieSchema = mongoose.Schema({
     type: [String],
   },
   ticket_rates: {
-    type: [rateSchema],
+    type: Number,
     required: true,
   },
   seat_count: {
@@ -62,7 +62,7 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
   timing: {
-    type: [String],
+    type: String,
   },
   start_date: {
     type: Date,

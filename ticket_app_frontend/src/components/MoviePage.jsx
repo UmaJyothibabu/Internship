@@ -25,10 +25,17 @@ import CircleIcon from "@mui/icons-material/Circle";
 // `;
 
 const MoviePage = ({ token, username, userId, role, movie }) => {
+  console.log(movie);
   const API_URL =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_API_URL_PROD
       : process.env.REACT_APP_API_URL_DEV;
+
+  const config = {
+    headers: {
+      authorization: " Bearer " + token,
+    },
+  };
 
   const [reviewed, setReviewed] = useState(true);
   const [reviews, setReviews] = useState([]);
@@ -52,7 +59,7 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
       navigate("/login");
     } else {
       axios
-        .get(`http://localhost:8000/api/reviews/${movie._id}`)
+        .get(`http://localhost:8000/api/reviews/${movie._id}`, config)
         .then((response) => {
           if (response.data.message === "No one reviewed the movie") {
             console.log(response);
@@ -63,9 +70,16 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
             setReviewed(true);
           }
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+          if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+            navigate("/login");
+          }
+          alert("Something went wrong");
+        });
     }
-  }, [role, movie._id, navigate]);
+  }, [role, movie._id, token, config, navigate]);
 
   const handleBookTicket = () => {
     navigate("/buyticket");
@@ -81,15 +95,19 @@ const MoviePage = ({ token, username, userId, role, movie }) => {
         sx={{ margin: "6vh 0", backgroundColor: "#45363C", p: 5 }}
         spacing={0}
       >
-        <Grid item xs={11} sm={10} md={3} lg={3}>
-          <img src={movie.image} alt={movie.movie_name} height="350px" />
+        <Grid item xs={11} sm={10} md={4} lg={4}>
+          <img
+            src={movie.imgUrl + movie.image}
+            alt={movie.movie_name}
+            height="350px"
+          />
         </Grid>
         <Grid
           item
           xs={11}
           sm={10}
-          md={7}
-          lg={7}
+          md={6}
+          lg={6}
           sx={{ textAlign: "left", color: "#fff" }}
         >
           <Typography

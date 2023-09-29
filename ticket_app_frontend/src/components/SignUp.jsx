@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import DisplayServerValidationErrors from "./DisplayServerValidationErrors";
 import {
@@ -46,6 +46,16 @@ const schema = yup.object({
 const SignUp = () => {
   const navigate = useNavigate();
   const [serverErrors, setServerErrors] = useState([]);
+
+  useEffect(() => {
+    // Check if the user is already authenticated (e.g., by checking the user token in sessionStorage)
+    const isAuthenticated = !!sessionStorage.getItem("userToken");
+
+    // If the user is authenticated, replace the current history state with the dashboard page's URL
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const API_URL =
     process.env.NODE_ENV === "production"
@@ -103,210 +113,216 @@ const SignUp = () => {
     <>
       <Navbar page="signup" />
       <DisplayServerValidationErrors errors={serverErrors} />
-      <Paper elevation={24} className="paperstyle" sx={{ paddingRight: "0" }}>
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          sx={{ height: "75vh" }}
-          // sx={{ height: "calc(100vh - 130px)" }}
-        >
-          <Grid item xs={11} sm={8} md={6} lg={6}>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              textAlign="center"
-            >
-              <Grid item xs={12}>
-                <Typography
-                  variant="h4"
-                  gutterBottom
-                  sx={{
-                    fontWeight: "bold",
-                    color: "#725A65",
-                    fontFamily: "'Tektur', cursive",
-                  }}
-                >
-                  Sign Up
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <form className="formstyle" onSubmit={handleSubmit(formSubmit)}>
-                  <TextField
-                    fullWidth
-                    sx={{ m: 1 }}
-                    label="Name"
-                    name="name"
-                    variant="outlined"
-                    {...register("name")}
-                    onBlur={() => handleBlur("name")}
-                    size="small"
-                  />
-                  <Box pl={2}>
-                    <Typography variant="body2" color="error" gutterBottom>
-                      {errors.name?.message}
-                    </Typography>
-                  </Box>
-                  <TextField
-                    fullWidth
-                    sx={{ m: 1 }}
-                    label="Email id"
-                    name="email"
-                    variant="outlined"
-                    {...register("email")}
-                    onBlur={() => handleBlur("email")}
-                    size="small"
-                  />
-                  <Box pl={3}>
-                    <Typography variant="body2" color="error" gutterBottom>
-                      {errors.email?.message}
-                    </Typography>
-                  </Box>
-                  <TextField
-                    fullWidth
-                    sx={{ m: 1 }}
-                    label="Phone number"
-                    name="phone"
-                    variant="outlined"
-                    {...register("phone")}
-                    onBlur={() => handleBlur("phone")}
-                    size="small"
-                  />
-                  <Box pl={3}>
-                    <Typography variant="body2" color="error" gutterBottom>
-                      {errors.phone?.message}
-                    </Typography>
-                  </Box>
-                  <TextField
-                    fullWidth
-                    sx={{ m: 1 }}
-                    name="password"
-                    type="password"
-                    label="Password"
-                    variant="outlined"
-                    {...register("password")}
-                    onBlur={() => handleBlur("password")}
-                    size="small"
-                  />
-                  <Box pl={3}>
-                    <Typography variant="body2" color="error" gutterBottom>
-                      {errors.password?.message}
-                    </Typography>
-                  </Box>
-                  <TextField
-                    fullWidth
-                    sx={{ m: 1 }}
-                    name="confirmpassword"
-                    type="password"
-                    label="Confirm Password"
-                    variant="outlined"
-                    {...register("confirmpassword")}
-                    onBlur={() => handleBlur("confirmpassword")}
-                    size="small"
-                  />
-                  <Box pl={3}>
-                    <Typography variant="body2" color="error" gutterBottom>
-                      {errors.confirmpassword?.message}
-                    </Typography>
-                  </Box>
-                  <Button
-                    sx={{
-                      padding: "1%",
-                      marginTop: "2vh",
-                      marginLeft: "2.4%",
-
-                      fontSize: "1.1em",
-                      backgroundColor: "#725A65",
-                      "&:hover": {
-                        backgroundColor: "#8E7480", // Change to a brighter color on hover
-                      },
-                    }}
-                    className="login"
-                    fullWidth
-                    type="submit"
-                    variant="contained"
-                  >
-                    Signup
-                  </Button>
-                </form>
-              </Grid>
+      <Grid sx={{ pb: 1.5 }}>
+        <Paper elevation={24} className="paperstyle" sx={{ paddingRight: "0" }}>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "75vh" }}
+            // sx={{ height: "calc(100vh - 130px)" }}
+          >
+            <Grid item xs={11} sm={8} md={6} lg={6}>
               <Grid
-                item
-                sx={{
-                  display: { xs: "block", md: "none" },
-                  marginLeft: "3vw",
-                  marginTop: "2vh",
-                }}
+                container
+                justifyContent="center"
+                alignItems="center"
+                textAlign="center"
               >
-                <Link
-                  href="/login"
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#725A65",
+                      fontFamily: "'Tektur', cursive",
+                    }}
+                  >
+                    Sign Up
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <form
+                    className="formstyle"
+                    onSubmit={handleSubmit(formSubmit)}
+                  >
+                    <TextField
+                      fullWidth
+                      sx={{ m: 1 }}
+                      label="Name"
+                      name="name"
+                      variant="outlined"
+                      {...register("name")}
+                      onBlur={() => handleBlur("name")}
+                      size="small"
+                    />
+                    <Box pl={2}>
+                      <Typography variant="body2" color="error" gutterBottom>
+                        {errors.name?.message}
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      sx={{ m: 1 }}
+                      label="Email id"
+                      name="email"
+                      variant="outlined"
+                      {...register("email")}
+                      onBlur={() => handleBlur("email")}
+                      size="small"
+                    />
+                    <Box pl={3}>
+                      <Typography variant="body2" color="error" gutterBottom>
+                        {errors.email?.message}
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      sx={{ m: 1 }}
+                      label="Phone number"
+                      name="phone"
+                      variant="outlined"
+                      {...register("phone")}
+                      onBlur={() => handleBlur("phone")}
+                      size="small"
+                    />
+                    <Box pl={3}>
+                      <Typography variant="body2" color="error" gutterBottom>
+                        {errors.phone?.message}
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      sx={{ m: 1 }}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      {...register("password")}
+                      onBlur={() => handleBlur("password")}
+                      size="small"
+                    />
+                    <Box pl={3}>
+                      <Typography variant="body2" color="error" gutterBottom>
+                        {errors.password?.message}
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      sx={{ m: 1 }}
+                      name="confirmpassword"
+                      type="password"
+                      label="Confirm Password"
+                      variant="outlined"
+                      {...register("confirmpassword")}
+                      onBlur={() => handleBlur("confirmpassword")}
+                      size="small"
+                    />
+                    <Box pl={3}>
+                      <Typography variant="body2" color="error" gutterBottom>
+                        {errors.confirmpassword?.message}
+                      </Typography>
+                    </Box>
+                    <Button
+                      sx={{
+                        padding: "1%",
+                        marginTop: "2vh",
+                        marginLeft: "2.4%",
+
+                        fontSize: "1.1em",
+                        backgroundColor: "#725A65",
+                        "&:hover": {
+                          backgroundColor: "#8E7480", // Change to a brighter color on hover
+                        },
+                      }}
+                      className="login"
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                    >
+                      Signup
+                    </Button>
+                  </form>
+                </Grid>
+                <Grid
+                  item
                   sx={{
-                    textDecoration: "none",
-                    color: "#725A65",
+                    display: { xs: "block", md: "none" },
+                    marginLeft: "3vw",
+                    marginTop: "2vh",
                   }}
                 >
-                  Already have an acoount? Click here
-                </Link>
+                  <Link
+                    href="/login"
+                    sx={{
+                      textDecoration: "none",
+                      color: "#725A65",
+                    }}
+                  >
+                    Already have an acoount? Click here
+                  </Link>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid
-            item
-            md={6}
-            lg={6}
-            sx={{
-              display: { xs: "none", md: "block" },
-              backgroundColor: "#725A65",
-              height: "100%",
-              paddingTop: "0",
-            }}
-          >
             <Grid
-              container
+              item
+              md={6}
+              lg={6}
               sx={{
-                color: "#fff",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
+                display: { xs: "none", md: "block" },
+                backgroundColor: "#725A65",
                 height: "100%",
+                paddingTop: "0",
               }}
             >
-              <Grid item xs={12} sx={{ margin: "15vh auto 0 auto" }}>
-                <Typography
-                  variant="h4"
-                  gutterBottom
-                  sx={{ fontFamily: "'Tektur', cursive" }}
-                >
-                  Awesome Movies
-                </Typography>
-                <Typography variant="body1" sx={{ margin: "0 4vw" }}>
-                  To keep connected with us please login with your personal info
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  gutterbottom
-                  sx={{
-                    color: "#fff",
-                    borderColor: "#fff",
-                    transform: "scale(1)",
-                    transition: "transform 0.2s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.2)", // Increase the scale on hover
+              <Grid
+                container
+                sx={{
+                  color: "#fff",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  height: "100%",
+                }}
+              >
+                <Grid item xs={12} sx={{ margin: "15vh auto 0 auto" }}>
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{ fontFamily: "'Tektur', cursive" }}
+                  >
+                    Awesome Movies
+                  </Typography>
+                  <Typography variant="body1" sx={{ margin: "0 4vw" }}>
+                    To keep connected with us please login with your personal
+                    info
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="outlined"
+                    gutterbottom
+                    sx={{
+                      color: "#fff",
                       borderColor: "#fff",
-                    },
-                  }}
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
+                      transform: "scale(1)",
+                      transition: "transform 0.2s ease-in-out",
+                      "&:hover": {
+                        transform: "scale(1.2)", // Increase the scale on hover
+                        borderColor: "#fff",
+                      },
+                    }}
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </Grid>
     </>
   );
 };

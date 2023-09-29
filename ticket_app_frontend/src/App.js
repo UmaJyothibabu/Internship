@@ -8,6 +8,9 @@ import Admin from "./components/Admin";
 import Customer from "./components/Customer";
 import Sidebar from "./components/Sidebar";
 import BookTicket from "./components/BookTicket";
+import Test from "./components/Test";
+import { useEffect } from "react";
+import AddMovie from "./components/AddMovie";
 
 function App() {
   return (
@@ -18,7 +21,9 @@ function App() {
       {/* <Route path="/admin" element={<Admin />} /> */}
       {/* <Route path="/customer" element={<Customer />} /> */}
       <Route path="/buyticket" element={<BookTicket />} />
-      <Route path="/dashboard" element={<Sidebar />} />
+      <Route path="/dashboard" element={<Sidebar page="Dashboard" />} />
+      <Route path="/addmovie" element={<Sidebar page="AddMovie" />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   );
 }

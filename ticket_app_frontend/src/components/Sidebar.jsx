@@ -29,6 +29,8 @@ import { Button, Grid, Paper, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Profile from "./Profile";
 import AddMovie from "./AddMovie";
+import WriteReview from "./WriteReview";
+import Bookings from "./Bookings";
 
 const drawerWidth = 240;
 
@@ -97,10 +99,10 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Sidebar() {
+export default function Sidebar({ page }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [menuData, setMenuData] = React.useState("Dashboard");
+  const [menuData, setMenuData] = React.useState(page);
   const [token, setToken] = useState(sessionStorage.getItem("userToken"));
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   const [userRole, setUserRole] = useState(sessionStorage.getItem("role"));
@@ -117,13 +119,18 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const mainContent = document.getElementById("main-content");
-    if (mainContent.scrollHeight > mainContent.clientHeight) {
-      setContentHeight(`${mainContent.scrollHeight}px`);
+    if (!token || (userRole !== "Admin" && userRole !== "Customer")) {
+      alert("Access denied");
+      navigate("/login");
     } else {
-      setContentHeight("100vh");
+      const mainContent = document.getElementById("main-content");
+      if (mainContent.scrollHeight > mainContent.clientHeight) {
+        setContentHeight(`${mainContent.scrollHeight}px`);
+      } else {
+        setContentHeight("100vh");
+      }
     }
-  }, [menuData]);
+  }, [menuData, token, userRole, navigate]);
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -183,7 +190,11 @@ export default function Sidebar() {
               <ListItem
                 key={1}
                 disablePadding
-                sx={{ display: "block", my: 2 }}
+                sx={{
+                  display: "block",
+                  my: 2,
+                  backgroundColor: menuData === "Dashboard" && "#725A65",
+                }}
                 onClick={() => {
                   if (menuData === "Dashboard") {
                     window.location.reload();
@@ -205,12 +216,19 @@ export default function Sidebar() {
                     }}
                   >
                     <Tooltip title="Dashboard" arrow>
-                      <DashboardIcon sx={{ color: "#725A65" }} />
+                      <DashboardIcon
+                        sx={{
+                          color: menuData === "Dashboard" ? "#FFF" : "#725A65",
+                        }}
+                      />
                     </Tooltip>
                   </ListItemIcon>
                   <ListItemText
                     primary="Dashboard"
-                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: menuData === "Dashboard" ? "#FFF" : "#725A65",
+                    }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -219,7 +237,11 @@ export default function Sidebar() {
               <ListItem
                 key={2}
                 disablePadding
-                sx={{ display: "block", mb: 2 }}
+                sx={{
+                  display: "block",
+                  mb: 2,
+                  backgroundColor: menuData === "AddMovie" && "#725A65",
+                }}
                 onClick={() => setMenuData("AddMovie")}
               >
                 <ListItemButton
@@ -237,12 +259,19 @@ export default function Sidebar() {
                     }}
                   >
                     <Tooltip title="Add Movie">
-                      <MovieIcon sx={{ color: "#725A65" }} />
+                      <MovieIcon
+                        sx={{
+                          color: menuData === "AddMovie" ? "#FFF" : "#725A65",
+                        }}
+                      />
                     </Tooltip>
                   </ListItemIcon>
                   <ListItemText
                     primary="Add Movie"
-                    sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: menuData === "AddMovie" ? "#FFF" : "#725A65",
+                    }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -252,7 +281,11 @@ export default function Sidebar() {
                 <ListItem
                   key={21}
                   disablePadding
-                  sx={{ display: "block", mb: 2 }}
+                  sx={{
+                    display: "block",
+                    mb: 2,
+                    backgroundColor: menuData === "Bookings" && "#725A65",
+                  }}
                   onClick={() => setMenuData("Bookings")}
                 >
                   <ListItemButton
@@ -270,19 +303,30 @@ export default function Sidebar() {
                       }}
                     >
                       <Tooltip title="view Tickets">
-                        <BookOnlineIcon sx={{ color: "#725A65" }} />
+                        <BookOnlineIcon
+                          sx={{
+                            color: menuData === "Bookings" ? "#FFF" : "#725A65",
+                          }}
+                        />
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Booked Tickets"
-                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        color: menuData === "Bookings" ? "#FFF" : "#725A65",
+                      }}
                     />
                   </ListItemButton>
                 </ListItem>
                 <ListItem
                   key={3}
                   disablePadding
-                  sx={{ display: "block", mb: 2 }}
+                  sx={{
+                    display: "block",
+                    mb: 2,
+                    backgroundColor: menuData === "WriteReview" && "#725A65",
+                  }}
                   onClick={() => setMenuData("WriteReview")}
                 >
                   <ListItemButton
@@ -300,12 +344,20 @@ export default function Sidebar() {
                       }}
                     >
                       <Tooltip title="Write Review">
-                        <RateReviewIcon sx={{ color: "#725A65" }} />
+                        <RateReviewIcon
+                          sx={{
+                            color:
+                              menuData === "WriteReview" ? "#FFF" : "#725A65",
+                          }}
+                        />
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Write Review"
-                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        color: menuData === "WriteReview" ? "#FFF" : "#725A65",
+                      }}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -317,7 +369,11 @@ export default function Sidebar() {
                 <ListItem
                   key={4}
                   disablePadding
-                  sx={{ display: "block", mb: 2 }}
+                  sx={{
+                    display: "block",
+                    mb: 2,
+                    backgroundColor: menuData === "Profile" && "#725A65",
+                  }}
                   onClick={() => setMenuData("Profile")}
                 >
                   <ListItemButton
@@ -335,12 +391,19 @@ export default function Sidebar() {
                       }}
                     >
                       <Tooltip title="Profile">
-                        <PersonIcon sx={{ color: "#725A65" }} />
+                        <PersonIcon
+                          sx={{
+                            color: menuData === "Profile" ? "#FFF" : "#725A65",
+                          }}
+                        />
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Profile"
-                      sx={{ opacity: open ? 1 : 0, color: "#725A65" }}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        ccolor: menuData === "Profile" ? "#FFF" : "#725A65",
+                      }}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -412,6 +475,26 @@ export default function Sidebar() {
         {menuData === "AddMovie" && (
           <Grid>
             <AddMovie
+              token={token}
+              username={username}
+              userId={userId}
+              role={userRole}
+            />
+          </Grid>
+        )}
+        {menuData === "WriteReview" && (
+          <Grid>
+            <WriteReview
+              token={token}
+              username={username}
+              userId={userId}
+              role={userRole}
+            />
+          </Grid>
+        )}
+        {menuData === "Bookings" && (
+          <Grid>
+            <Bookings
               token={token}
               username={username}
               userId={userId}

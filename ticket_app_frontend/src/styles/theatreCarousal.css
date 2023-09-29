@@ -4,7 +4,7 @@
 }
 
 .innerdiv {
-  height: 50vh;
+  height: 85vh;
 }
 
 .about {
@@ -19,4 +19,5 @@
   color: #fff;
   padding-top: 5vh;
   padding-bottom: 5vh;
+  margin-bottom: 1vh;
 }

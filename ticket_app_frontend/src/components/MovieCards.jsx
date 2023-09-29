@@ -13,19 +13,22 @@ import axios from "axios";
 
 const MovieCards = () => {
   const [movielist, setMovieList] = useState([]);
+  const [imgUrl, setImgUrl] = useState();
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/movie`).then((response) => {
-      setMovieList(response.data);
-      // if(response.data.message==="")
-    });
+    axios
+      .get(`http://localhost:8000/api/movie`)
+      .then((response) => {
+        setMovieList(response.data.movies);
+        setImgUrl(response.data.imgUrl);
+        // if(response.data.message==="")
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("something went wrong");
+      });
   }, []);
 
-  const movies = [
-    { img: "/movie1.jpg", name: "Madhura Manohara Moham" },
-    { img: "movie2.jpg", name: "RDX" },
-    { img: "movie3.jpg", name: "King of Kotha" },
-  ];
   const navigate = useNavigate();
   return (
     <>
@@ -35,38 +38,35 @@ const MovieCards = () => {
         justifyContent="center"
         alignItems="center"
       >
-        {movielist.map((val, i) => {
-          return (
-            <Grid item xs={11} sm={11} md={6} lg={4} key={i}>
-              <Card sx={{ maxWidth: 345, m: 3 }}>
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="500"
-                  image={val.image}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {val.name}
-                  </Typography>
-                  {/* <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography> */}
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    sx={{ margin: "0 auto" }}
-                    onClick={() => navigate("/login")}
-                  >
-                    Book Now
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })}
+        {movielist &&
+          movielist.map((val, i) => {
+            return (
+              <Grid item xs={11} sm={11} md={6} lg={4} key={i}>
+                <Card sx={{ maxWidth: 345, m: 3 }}>
+                  <CardMedia
+                    component="img"
+                    alt={val.movie_name}
+                    height="450"
+                    image={imgUrl + val.image}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {val.name}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      sx={{ margin: "0 auto" }}
+                      onClick={() => navigate("/login")}
+                    >
+                      Book Now
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
       </Grid>
     </>
   );
