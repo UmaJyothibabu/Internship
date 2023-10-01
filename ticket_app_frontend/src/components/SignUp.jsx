@@ -114,7 +114,14 @@ const SignUp = () => {
       <Navbar page="signup" />
       <DisplayServerValidationErrors errors={serverErrors} />
       <Grid sx={{ pb: 1.5 }}>
-        <Paper elevation={24} className="paperstyle" sx={{ paddingRight: "0" }}>
+        <Paper
+          elevation={24}
+          className="paperstyle"
+          sx={{
+            paddingRight: "0",
+            backgroundColor: "rgba(255, 255, 255, 0.75)",
+          }}
+        >
           <Grid
             container
             justifyContent="center"
@@ -271,7 +278,8 @@ const SignUp = () => {
               lg={6}
               sx={{
                 display: { xs: "none", md: "block" },
-                backgroundColor: "#725A65",
+                // backgroundColor: "#725A65",
+                background: "rgba(114, 90, 101, 0.8)",
                 height: "100%",
                 paddingTop: "0",
               }}

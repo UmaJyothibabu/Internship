@@ -189,12 +189,15 @@ const AddMovie = ({ token, username, userId, role }) => {
   const handleSubmit = (values) => {
     if (activeStep === steps.length - 1) {
       // Final step, handle form submission here
+      // const languages = values.languages.split(",").map((lang) => lang.trim());
+      // const genre = values.genre.split(",").map((gen) => gen.trim());
+
       const formData = new FormData();
       formData.append("image", values.image);
       formData.append("movie_name", values.movie_name);
       formData.append("category", values.category);
-      formData.append("languages", values.languages);
-      formData.append("genre", values.genre);
+      formData.append("languages", JSON.stringify(values.languages));
+      formData.append("genre", JSON.stringify(values.genre));
       formData.append("duration", values.duration);
       formData.append("description", values.description);
       formData.append("cast", JSON.stringify(values.cast));
@@ -203,9 +206,9 @@ const AddMovie = ({ token, username, userId, role }) => {
       formData.append("timing", values.timing);
       formData.append("start_date", values.start_date);
       formData.append("end_date", values.end_date);
-      // formData.forEach((value, key) => {
-      //   console.log(key, value);
-      // });
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
 
       axios
         .post(`http://localhost:8000/api/movie`, formData, config)
@@ -236,8 +239,21 @@ const AddMovie = ({ token, username, userId, role }) => {
     <Grid sx={{ margin: "10vh 5vw" }}>
       <CssBaseline />
       <Container component={Box} p={4}>
-        <Paper component={Box} p={5}>
-          <Typography variant="h4" textAlign={"center"} mb={2}>
+        <Paper
+          component={Box}
+          p={5}
+          sx={{ backgroundColor: "rgba(231, 232, 238, 0.9)" }}
+        >
+          <Typography
+            variant="h4"
+            textAlign={"center"}
+            mb={2}
+            sx={{
+              fontFamily: "'Mate', serif",
+              fontWeight: "bold",
+              color: "#C8193C",
+            }}
+          >
             Add Movie
           </Typography>
           <Formik
@@ -645,7 +661,14 @@ const AddMovie = ({ token, username, userId, role }) => {
                   )}
                   <div>
                     <Button
-                      sx={{ m: 2, px: 5, py: 1 }}
+                      sx={{
+                        m: 2,
+                        px: 5,
+                        py: 1,
+                        backgroundColor: "#C8193C",
+
+                        "&:hover": { backgroundColor: "#A31431" },
+                      }}
                       disabled={activeStep === 0}
                       onClick={handleBack}
                       variant="contained"
@@ -654,7 +677,14 @@ const AddMovie = ({ token, username, userId, role }) => {
                     </Button>
                     {activeStep === steps.length - 1 ? (
                       <Button
-                        sx={{ m: 2, px: 5, py: 1 }}
+                        sx={{
+                          m: 2,
+                          px: 5,
+                          py: 1,
+                          backgroundColor: "#36593A",
+
+                          "&:hover": { backgroundColor: "#36593A" },
+                        }}
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -663,7 +693,14 @@ const AddMovie = ({ token, username, userId, role }) => {
                       </Button>
                     ) : (
                       <Button
-                        sx={{ m: 2, px: 5, py: 1 }}
+                        sx={{
+                          m: 2,
+                          px: 5,
+                          py: 1,
+                          backgroundColor: "#C8193C",
+
+                          "&:hover": { backgroundColor: "#A31431" },
+                        }}
                         variant="contained"
                         color="primary"
                         onClick={() => handleSubmit()}

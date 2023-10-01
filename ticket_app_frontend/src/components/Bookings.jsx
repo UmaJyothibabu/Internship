@@ -119,7 +119,12 @@ const Bookings = ({ token, username, userId, role }) => {
           <Typography
             variant="h3"
             textAlign={"center"}
-            sx={{ m: 3, fontFamily: "'Mate', serif", fontWeight: "bold" }}
+            sx={{
+              m: 3,
+              fontFamily: "'Mate', serif",
+              fontWeight: "bold",
+              color: "#C8193C",
+            }}
           >
             Tickets
           </Typography>
@@ -141,8 +146,8 @@ const Bookings = ({ token, username, userId, role }) => {
                     sx={{
                       // minHeight: "60vh",
 
-                      backgroundColor: "#BCC2C8",
-                      flex: "1", // Take up available vertical space
+                      backgroundColor: "rgba(188, 194, 200, 0.87)",
+                      flex: "1", // Take up available vertical space,
                     }}
                   >
                     <CardContent sx={{ textAlign: "center" }}>
@@ -169,7 +174,7 @@ const Bookings = ({ token, username, userId, role }) => {
                       >
                         {ticket.movie.movie_name}
                       </Typography>
-                      <Grid container textAlign={"left"} sx={{ m: 5 }}>
+                      <Grid container textAlign={"left"} sx={{ m: 2 }}>
                         <Grid item xs={12} sm={12} md={4} lg={5}>
                           <Typography
                             variant="subtitle1"
@@ -294,7 +299,9 @@ const Bookings = ({ token, username, userId, role }) => {
                       </Typography>
                     </CardContent>
 
-                    <CardActions sx={{ justifyContent: "center" }}>
+                    <CardActions
+                      sx={{ justifyContent: "center", m: 0, p: 0, pb: 1 }}
+                    >
                       <Button
                         variant="contained"
                         sx={{

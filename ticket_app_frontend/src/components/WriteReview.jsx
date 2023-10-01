@@ -173,7 +173,11 @@ const WriteReview = ({ token, username, userId, role }) => {
       >
         <Typography
           variant="h3"
-          sx={{ fontFamily: "'Dancing Script', cursive", fontWeight: "bolder" }}
+          sx={{
+            fontFamily: "'Dancing Script', cursive",
+            fontWeight: "bolder",
+            color: "#C8193C",
+          }}
         >
           Write Your Reviews
         </Typography>
@@ -197,13 +201,16 @@ const WriteReview = ({ token, username, userId, role }) => {
                       container
                       sx={{
                         border: reviewStates[index] ? "1px solid #000" : "none",
+
                         p: 2,
+                        m: 0,
                       }}
+                      spacing={0}
                     >
                       <Grid item xs={12} sm={12} md={6}>
                         <Card
                           sx={{
-                            maxWidth: 280,
+                            maxWidth: 300,
                             maxHeight: 450,
                             overflow: "hidden",
                             position: "relative",
@@ -240,6 +247,10 @@ const WriteReview = ({ token, username, userId, role }) => {
                         sm={12}
                         md={6}
                         display={reviewStates[index] ? "block" : "none"}
+                        sx={{
+                          backgroundColor: "rgba(231, 232, 238, 0.95)",
+                          px: 1,
+                        }}
                       >
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <Typography variant="h6" sx={{ mb: 3 }}>

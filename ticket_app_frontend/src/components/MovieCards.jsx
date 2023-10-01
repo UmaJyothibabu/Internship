@@ -41,7 +41,7 @@ const MovieCards = () => {
         {movielist &&
           movielist.map((val, i) => {
             return (
-              <Grid item xs={11} sm={11} md={6} lg={4} key={i}>
+              <Grid item xs={11} sm={11} md={6} lg={3} key={i}>
                 <Card sx={{ maxWidth: 345, m: 3 }}>
                   <CardMedia
                     component="img"
@@ -49,20 +49,13 @@ const MovieCards = () => {
                     height="450"
                     image={imgUrl + val.image}
                   />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {val.name}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      sx={{ margin: "0 auto" }}
-                      onClick={() => navigate("/login")}
-                    >
-                      Book Now
-                    </Button>
-                  </CardActions>
+                  <Button
+                    size="small"
+                    sx={{ margin: "0 auto", p: 1 }}
+                    onClick={() => navigate("/login")}
+                  >
+                    Book Now
+                  </Button>
                 </Card>
               </Grid>
             );

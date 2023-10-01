@@ -165,7 +165,10 @@ const Profile = ({ token, username, userId, role }) => {
       sx={{ margin: "15vh auto" }}
     >
       <Grid item xs={10} sm={10} md={8} lg={4}>
-        <Card variant="outlined" sx={{ backgroundColor: "#E7E8EE" }}>
+        <Card
+          variant="outlined"
+          sx={{ backgroundColor: "rgba(231, 232, 238, 0.8)" }}
+        >
           <CardContent>
             <Typography variant="h2">
               <PersonPinIcon sx={{ fontSize: "3rem" }} />
@@ -179,6 +182,7 @@ const Profile = ({ token, username, userId, role }) => {
                 fontSize: "2rem",
                 fontFamily: "'Mate', serif",
                 fontWeight: "Bold",
+                color: "#C8193C",
               }}
             >
               {user.name}
@@ -186,7 +190,9 @@ const Profile = ({ token, username, userId, role }) => {
             <TableContainer component={Paper} sx={{ width: "100%" }}>
               <Table>
                 <TableBody>
-                  <TableRow sx={{ backgroundColor: "#E7E8EE" }}>
+                  <TableRow
+                    sx={{ backgroundColor: "rgba(231, 232, 238, 0.8)" }}
+                  >
                     <TableCell
                       align="right"
                       sx={{
@@ -259,9 +265,9 @@ const Profile = ({ token, username, userId, role }) => {
                       <Button
                         variant="contained"
                         sx={{
-                          backgroundColor: "#684C3B",
+                          backgroundColor: "#C8193C",
 
-                          "&:hover": { backgroundColor: "#835F49" },
+                          "&:hover": { backgroundColor: "#A31431" },
                         }}
                         onClick={handleChangePwdButtonClick}
                       >

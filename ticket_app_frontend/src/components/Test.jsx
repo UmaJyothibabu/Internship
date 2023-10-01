@@ -264,3 +264,63 @@ const UpdateMovie = ({
 };
 
 export default UpdateMovie;
+// const seatMap = (date) => {
+//   // setSelectedSeats([]);
+//   // setSeatColors({});
+//   const seatsPerRows = 10;
+//   const seatRows = Math.floor(movie.seat_count / 10);
+//   for (let seatNum = 1; seatNum <= seatsPerRows; seatNum++) {
+//     const seatRow = [];
+//     for (let row = 1; row <= seatRows; row++) {
+//       const seatName = `${numberToLetter(row)}${seatNum}`;
+//       if (
+//         dateWithBooking &&
+//         dateWithBooking.seats.find((val) => val === seatName)
+//       ) {
+//         seatRow.push(
+//           <Grid key={`seat-${row}-${seatNum}`}>
+//             <Tooltip title={seatName}>
+//               <IconButton sx={{ color: "blue" }}>
+//                 <EventSeatIcon />
+//               </IconButton>
+//             </Tooltip>
+//           </Grid>
+//         );
+//       } else {
+//         seatRow.push(
+//           <Grid key={`seat-${row}-${seatNum}`}>
+//             <Tooltip title={seatName}>
+//               <IconButton
+//                 onClick={() => {
+//                   handleSeatSelection(seatName);
+//                   toggleSeatColor(seatName);
+//                 }}
+//               >
+//                 <EventSeatIcon />
+//               </IconButton>
+//             </Tooltip>
+//           </Grid>
+//         );
+//       }
+//       console.log(selectedSeats);
+//     }
+//     seatElements.push(
+//       <div className="seat-row" key={`row-${seatNum}`}>
+//         {seatRow}
+//       </div>
+//     );
+//   }
+//   return seatElements;
+// };
+// const selectedSeats = [];
+// // saving selected seats in an array
+// const handleSeatSelection = (seatName) => {
+//   const index = selectedSeats.indexOf(seatName);
+
+//   if (index !== -1) {
+//     selectedSeats.splice(index, 1);
+//   } else {
+//     selectedSeats.push(seatName);
+//   }
+//   console.log(selectedSeats);
+// };

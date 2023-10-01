@@ -71,12 +71,15 @@ const Login = () => {
           const userId = response.data.data._id;
           const role = response.data.data.role;
           const username = response.data.data.email;
+          const name = response.data.data.name;
+          // console.log(name);
 
           // setting session
           sessionStorage.setItem("userToken", token);
           sessionStorage.setItem("role", role);
           sessionStorage.setItem("userId", userId);
           sessionStorage.setItem("username", username);
+          sessionStorage.setItem("name", name);
           alert(response.data.message);
           if (role === "Admin" || role === "Customer") {
             navigate("/dashboard");
@@ -96,7 +99,11 @@ const Login = () => {
     <>
       <Navbar page="login" />
       <Grid sx={{ pb: 1.5 }}>
-        <Paper elevation={24} className="paperstyle">
+        <Paper
+          elevation={24}
+          className="paperstyle"
+          sx={{ backgroundColor: "rgba(255, 255, 255, 0.75)" }}
+        >
           <Grid
             container
             justifyContent="center"
@@ -108,8 +115,12 @@ const Login = () => {
               md={6}
               lg={6}
               sx={{
-                display: { xs: "none", md: "block" },
-                backgroundColor: "#725A65",
+                display: {
+                  xs: "none",
+                  md: "block",
+                },
+                // backgroundColor: "#725A65",
+                background: "rgba(114, 90, 101, 0.8)",
                 height: "100%",
               }}
             >

@@ -37,8 +37,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // adding new movies
 
-router.post("/movie", auth, upload.single("image"), async (req, res) => {
+router.post("/movie", upload.single("image"), auth, async (req, res) => {
   try {
+    // console.log(req.body.role);
     if (req.body.role === "Admin") {
       // console.log(req.body);
 
@@ -50,6 +51,8 @@ router.post("/movie", auth, upload.single("image"), async (req, res) => {
       const imagePath = req.file.path.replace(/\\/g, "/");
       req.body.image = imagePath;
       req.body.cast = JSON.parse(req.body.cast);
+      req.body.languages = JSON.parse(req.body.languages);
+      req.body.genre = JSON.parse(req.body.genre);
       console.log(req.body);
       const newMovie = movieData(req.body);
 

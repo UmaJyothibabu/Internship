@@ -21,7 +21,7 @@ import UpdateMovie from "./UpdateMovie";
 import TicketTable from "./TicketTable";
 // import Dashboard from "@mui/icons-material/Dashboard";
 
-const Dashboard = ({ token, username, userId, role }) => {
+const Dashboard = ({ token, username, userId, role, name }) => {
   let [loading, setLoading] = useState(true);
   let [movies, setMovies] = useState([]);
   let [deleted, setDeleted] = useState(false);
@@ -134,128 +134,152 @@ const Dashboard = ({ token, username, userId, role }) => {
           userId={userId}
           role={role}
           movie={{ ...singleMovie, imgUrl: imgUrl }}
+          name={name}
           // imgurl={imgUrl}
         />
       ) : (
-        <Box sx={{ flexGrow: 1, margin: "15vh 5vw" }}>
+        <Box sx={{ flexGrow: 1, margin: "10vh 5vw" }}>
           {loading ? (
             <div style={{ margin: "10% 45%" }}>
               <CircularProgress />
               <h1>Loading</h1>
             </div>
           ) : (
-            <Grid
-              container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-            >
-              {movies.map((val, index) => (
-                <Grid item xs={4} sm={4} md={4} key={index}>
-                  <Card
-                    sx={{
-                      maxWidth: 280,
-                      maxHeight: 450,
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                    onClick={() => handleClick(val)}
-                  >
-                    <CardMedia
+            <>
+              <Grid
+                sx={{
+                  mt: 0,
+                  mb: 5,
+                  backgroundColor: "rgba(231, 232, 238, 0.3)",
+                  p: 2,
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  textAlign="center"
+                  sx={{
+                    fontFamily: "'Mate', serif",
+                    // fontFamily: "'Dancing Script', cursive",
+                    fontWeight: "bolder",
+                    color: "#C8193C",
+                  }}
+                >
+                  {role === "Customer" ? "Book your seats" : "Now showing"}
+                </Typography>
+              </Grid>
+              <Grid
+                container
+                spacing={{ xs: 2, md: 3 }}
+                columns={{ xs: 4, sm: 8, md: 12 }}
+              >
+                {movies.map((val, index) => (
+                  <Grid item xs={4} sm={4} md={3} key={index}>
+                    <Card
                       sx={{
-                        height: 350,
-                        maxWidth: "100%",
-                        maxHeight: "100%",
+                        maxWidth: 280,
+                        maxHeight: 450,
+                        overflow: "hidden",
                         position: "relative",
-                        transition: "opacity 0.3s ease-in-out",
-                        "&:hover": {
-                          opacity: 0, // Hide the image on hover
-                        },
+                        backgroundColor: "rgba(231, 232, 238, 0.8)",
                       }}
+                      onClick={() => handleClick(val)}
                     >
-                      <img
-                        src={imgUrl + val.image}
-                        alt={val.movie_name}
-                        style={{
+                      <CardMedia
+                        sx={{
+                          height: 350,
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                          position: "relative",
+                          transition: "opacity 0.3s ease-in-out",
+                          "&:hover": {
+                            opacity: 0, // Hide the image on hover
+                          },
+                        }}
+                      >
+                        <img
+                          src={imgUrl + val.image}
+                          alt={val.movie_name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                          // style={{ maxHeight: "200px", width: "auto" }}
+                        />
+                      </CardMedia>
+                      <CardContent
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
-                        }}
-                        // style={{ maxHeight: "200px", width: "auto" }}
-                      />
-                    </CardMedia>
-                    <CardContent
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        opacity: 0, // Initially hide the content
-                        transition: "opacity 0.3s ease-in-out",
-                        "&:hover": {
-                          opacity: 1, // Show the content on hover
-                        },
-                      }}
-                    >
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        sx={{
-                          fontSize: "1.17rem",
-                          fontWeight: "bold",
-                          color: "#45363C",
-                          fontFamily: "'Tektur', cursive",
-                        }}
-                        component="div"
-                      >
-                        {val.movie_name}
-                      </Typography>
-
-                      {val.languages.map((lang, i) => {
-                        console.log(lang);
-                        return (
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                            key={i + 100}
-                            sx={{
-                              color: "#45363C",
-                              fontWeight: "bold",
-                              fontFamily: "'Tektur', cursive",
-                            }}
-                          >
-                            {lang}
-                          </Typography>
-                        );
-                      })}
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="div"
-                        sx={{
-                          color: "#45363C",
-                          fontWeight: "bold",
-                          fontFamily: "'Tektur', cursive",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "rgba(255, 255, 255, 0.7)",
+                          opacity: 0, // Initially hide the content
+                          transition: "opacity 0.3s ease-in-out",
+                          "&:hover": {
+                            opacity: 1, // Show the content on hover
+                          },
                         }}
                       >
-                        {val.category}
-                      </Typography>
-                      {role === "Admin" && (
-                        <>
-                          <AverageRating
-                            token={token}
-                            username={username}
-                            userId={userId}
-                            role={role}
-                            movie={val._id}
-                          />
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          sx={{
+                            fontSize: "1.17rem",
+                            fontWeight: "bold",
+                            color: "#45363C",
+                            fontFamily: "'Tektur', cursive",
+                          }}
+                          component="div"
+                        >
+                          {val.movie_name}
+                        </Typography>
 
-                          {/* <Typography
+                        {val.languages.map((lang, i) => {
+                          console.log(lang);
+                          return (
+                            <Typography
+                              variant="subtitle1"
+                              color="text.secondary"
+                              key={i + 100}
+                              sx={{
+                                color: "#45363C",
+                                fontWeight: "bold",
+                                fontFamily: "'Tektur', cursive",
+                              }}
+                            >
+                              {lang}
+                            </Typography>
+                          );
+                        })}
+                        <Typography
+                          gutterBottom
+                          variant="body2"
+                          component="div"
+                          sx={{
+                            color: "#45363C",
+                            fontWeight: "bold",
+                            fontFamily: "'Tektur', cursive",
+                          }}
+                        >
+                          {val.category}
+                        </Typography>
+                        {role === "Admin" && (
+                          <>
+                            <AverageRating
+                              token={token}
+                              username={username}
+                              userId={userId}
+                              role={role}
+                              movie={val._id}
+                            />
+
+                            {/* <Typography
                             gutterBottom
                             variant="subtitle1"
                             component="div"
@@ -263,78 +287,79 @@ const Dashboard = ({ token, username, userId, role }) => {
                           >
                             Tickets sold
                           </Typography> */}
-                          <Button
-                            variant="text"
-                            sx={{ color: "#C76B71", fontWeight: "bold" }}
-                            onClick={(event) => handleTicketCount(val, event)}
-                          >
-                            Tickets sold
-                          </Button>
-                          {showTable && (
-                            <TicketTable
-                              token={token}
-                              username={username}
-                              userId={userId}
-                              role={role}
-                              movie={singleMovieTicket}
-                              onCloseDialog={handleCloseTable}
-                            />
-                          )}
-                        </>
-                      )}
-                    </CardContent>
-                    {role === "Admin" && (
-                      <CardActions>
-                        <Grid container>
-                          <Grid item xs={6}>
                             <Button
-                              size="medium"
-                              variant="outlined"
-                              sx={{
-                                px: 4,
-                                mr: 2,
-                                fontFamily: "'Tektur', cursive",
-                              }}
-                              onClick={() => {
-                                handleDelete(val._id);
-                              }}
+                              variant="text"
+                              sx={{ color: "#C76B71", fontWeight: "bold" }}
+                              onClick={(event) => handleTicketCount(val, event)}
                             >
-                              Delete
+                              Tickets sold
                             </Button>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <Button
-                              size="medium"
-                              variant="outlined"
-                              sx={{
-                                px: 5,
-                                ml: 2,
-                                fontFamily: "'Tektur', cursive",
-                              }}
-                              onClick={() => {
-                                handleOpen(val);
-                              }}
-                            >
-                              Edit
-                            </Button>
-                            {openDialogue && (
-                              <UpdateMovie
+                            {showTable && (
+                              <TicketTable
                                 token={token}
                                 username={username}
                                 userId={userId}
                                 role={role}
-                                movie={updateMovie}
-                                onCloseDialog={handleCloseDialog}
+                                movie={singleMovieTicket}
+                                onCloseDialog={handleCloseTable}
                               />
                             )}
+                          </>
+                        )}
+                      </CardContent>
+                      {role === "Admin" && (
+                        <CardActions>
+                          <Grid container>
+                            <Grid item xs={6}>
+                              <Button
+                                size="medium"
+                                variant="outlined"
+                                sx={{
+                                  px: 4,
+                                  mr: 2,
+                                  fontFamily: "'Tektur', cursive",
+                                }}
+                                onClick={() => {
+                                  handleDelete(val._id);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Button
+                                size="medium"
+                                variant="outlined"
+                                sx={{
+                                  px: 5,
+                                  ml: 2,
+                                  fontFamily: "'Tektur', cursive",
+                                }}
+                                onClick={() => {
+                                  handleOpen(val);
+                                }}
+                              >
+                                Edit
+                              </Button>
+                              {openDialogue && (
+                                <UpdateMovie
+                                  token={token}
+                                  username={username}
+                                  userId={userId}
+                                  role={role}
+                                  movie={updateMovie}
+                                  onCloseDialog={handleCloseDialog}
+                                />
+                              )}
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </CardActions>
-                    )}
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                        </CardActions>
+                      )}
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </>
           )}
         </Box>
       )}

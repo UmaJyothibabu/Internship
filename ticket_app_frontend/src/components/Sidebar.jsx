@@ -31,6 +31,7 @@ import Profile from "./Profile";
 import AddMovie from "./AddMovie";
 import WriteReview from "./WriteReview";
 import Bookings from "./Bookings";
+// import "../App.css";
 
 const drawerWidth = 240;
 
@@ -89,13 +90,16 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
+    backgroundColor: "rgba(231, 232, 238, 0.8)",
   }),
   ...(!open && {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
+    backgroundColor: "rgba(231, 232, 238, 0.8)",
   }),
 }));
 
@@ -107,6 +111,8 @@ export default function Sidebar({ page }) {
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   const [userRole, setUserRole] = useState(sessionStorage.getItem("role"));
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
+  const [name, setName] = useState(sessionStorage.getItem("name"));
+  // console.log("Movie", sessionStorage.getItem("name"));
   const [contentHeight, setContentHeight] = useState("100vh");
 
   const handleDrawerOpen = () => {
@@ -135,8 +141,17 @@ export default function Sidebar({ page }) {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <CssBaseline />
-      <Paper elevation={24}>
-        <AppBar position="fixed" sx={{ backgroundColor: "#725A65" }}>
+      <Paper
+        elevation={24}
+        sx={{ backgroundColor: "rgba(231, 232, 238, 0.5)" }}
+      >
+        <AppBar
+          position="fixed"
+          sx={{
+            backgroundColor: "rgba(114, 90, 101, 0.95)",
+            backdropFilter: "blur(5px)",
+          }}
+        >
           <Toolbar>
             <IconButton
               color="inherit"
@@ -174,7 +189,12 @@ export default function Sidebar({ page }) {
           </Toolbar>
         </AppBar>
 
-        <Drawer variant="permanent" open={open} elevation={24}>
+        <Drawer
+          variant="permanent"
+          open={open}
+          elevation={24}
+          sx={{ backgroundColor: "rgba(231, 232, 238, 0.5)" }}
+        >
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "rtl" ? (
@@ -459,6 +479,7 @@ export default function Sidebar({ page }) {
               username={username}
               userId={userId}
               role={userRole}
+              name={name}
             />
           </Grid>
         )}
