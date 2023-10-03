@@ -135,39 +135,44 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
   // const [selectedCard, setSelectedCard] = useState("");
   // booking confirmation
   const handleConfirmBooking = () => {
-    const rate = selectedSeats.length * movie.ticket_rates;
-    const ticket = {
-      username: username,
-      movie: movie._id,
-      seat_number: selectedSeats,
-      date: selectedDate,
-      time: movie.timing,
-      total_rate: rate,
-    };
-    console.log("ticket", ticket);
-    axios
-      .post(`http://localhost:8000/api/movie/ticket`, ticket, config)
-      .then((response) => {
-        if (response.data.message === "Booking completed") {
-          alert(response.data.message);
-          setConfirmed(true);
-          setSelectedDate();
-        } else {
+    if (selectedSeats.length !== 0) {
+      const rate = selectedSeats.length * movie.ticket_rates;
+      const ticket = {
+        username: username,
+        movie: movie._id,
+        seat_number: selectedSeats,
+        date: selectedDate,
+        time: movie.timing,
+        total_rate: rate,
+      };
+      console.log("ticket", ticket);
+
+      axios
+        .post(`http://localhost:8000/api/movie/ticket`, ticket, config)
+        .then((response) => {
+          if (response.data.message === "Booking completed") {
+            alert(response.data.message);
+            setConfirmed(true);
+            setSelectedDate();
+          } else {
+            alert("Something went wrong");
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            alert(error.response.data.message);
+            setConfirmed(true);
+            setSelectedDate();
+          } else if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+            navigate("/login");
+          }
           alert("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 400) {
-          alert(error.response.data.message);
-          setConfirmed(true);
-          setSelectedDate();
-        } else if (error.response && error.response.status === 401) {
-          alert(error.response.data.message);
-          navigate("/login");
-        }
-        alert("Something went wrong");
-        alert("server error");
-      });
+          alert("server error");
+        });
+    } else {
+      alert("Please select seats");
+    }
   };
 
   // to detect which card selected
@@ -261,7 +266,7 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
           <h1>Loading</h1>
         </div>
       ) : (
-        <React.Fragment sx={{ background: "none" }}>
+        <React.Fragment sx={{ background: "none", p: 5 }}>
           <Grid
             container
             justifyContent="center"
@@ -362,13 +367,24 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
               </Grid>
             ))}
           </Grid>
+          {!selectedDate && (
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              textAlign="center"
+              sx={{ backgroundColor: "#fff", p: 5, minHeight: "34.5vh" }}
+            >
+              Pick a date to book your seats
+            </Grid>
+          )}
           {selectedDate && (
             <>
               <Grid
                 container
                 justifyContent="center"
                 alignItems="center"
-                sx={{ p: 4, backgroundColor: "#fff" }}
+                sx={{ p: 5, backgroundColor: "#fff", minHeight: "30vh" }}
               >
                 {seatMap(selectedDate)}
               </Grid>
@@ -390,17 +406,6 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
                 </Button>
               </Grid>
             </>
-          )}
-          {!selectedDate && (
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              textAlign="center"
-              sx={{ backgroundColor: "#fff", p: 5, minHeight: "34.5vh" }}
-            >
-              Pick a date to book your seats
-            </Grid>
           )}
         </React.Fragment>
       )}
