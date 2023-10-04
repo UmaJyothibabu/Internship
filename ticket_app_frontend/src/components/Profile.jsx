@@ -107,8 +107,10 @@ const Profile = ({ token, username, userId, role }) => {
         if (error.response && error.response.status === 401) {
           alert(error.response.data.message);
           navigate("/login");
-        }
-        alert("Something went wrong");
+        } else if (error.response && error.response.status === 400) {
+          setMessage(error.response.data.message);
+          setIsCorrect(false);
+        } else alert("Something went wrong");
       });
   };
 

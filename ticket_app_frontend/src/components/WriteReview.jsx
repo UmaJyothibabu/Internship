@@ -260,7 +260,7 @@ const WriteReview = ({ token, username, userId, role }) => {
                           <Controller
                             name="rating"
                             control={control}
-                            defaultValue={0} // Default value for the dropdown
+                            // defaultValue={0} // Default value for the dropdown
                             render={({ field }) => (
                               <>
                                 {" "}
@@ -272,6 +272,7 @@ const WriteReview = ({ token, username, userId, role }) => {
 
                                   size="small"
                                   sx={{ mb: 5, minWidth: 120 }}
+                                  required
                                 >
                                   {[0, 1, 2, 3, 4, 5].map((value) => (
                                     <MenuItem key={value} value={value}>

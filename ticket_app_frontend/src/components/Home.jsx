@@ -25,7 +25,7 @@ const Home = () => {
     }
   }, [navigate]);
   return (
-    <>
+    <React.Fragment>
       <Navbar page="home" />
       <Grid
         container
@@ -48,7 +48,7 @@ const Home = () => {
         <Grid item xs={12}>
           <TheatreCaurousal />
         </Grid>
-        <Grid item xs={11} sx={{ p: 5 }}>
+        <Grid item xs={12} sx={{ p: 5, backgroundColor: "#fff" }}>
           <Typography variant="h4" gutterBottom sx={{ color: "#7E2E84" }}>
             Running Housefully
           </Typography>
@@ -157,7 +157,7 @@ const Home = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </React.Fragment>
   );
 };
 

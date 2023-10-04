@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
   Box,
   Button,
+  Checkbox,
+  FormControlLabel,
   Grid,
   InputAdornment,
   Link,
@@ -29,6 +31,7 @@ const schema = yup.object({
 
 const Login = () => {
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     // Check if the user is already authenticated (e.g., by checking the user token in sessionStorage)
@@ -60,6 +63,10 @@ const Login = () => {
   const handleBlur = async (fieldName) => {
     // Trigger validation onBlur for the specified field
     await trigger(fieldName);
+  };
+
+  const handlePasswordShow = () => {
+    setShow(!show);
   };
 
   const formSubmit = (data) => {
@@ -224,7 +231,7 @@ const Login = () => {
                       fullWidth
                       sx={{ m: 2 }}
                       name="password"
-                      type="password"
+                      type={show ? "text" : "password"}
                       label="Password"
                       variant="outlined"
                       {...register("password")}
@@ -234,6 +241,17 @@ const Login = () => {
                       <Typography variant="body2" color="error" gutterBottom>
                         {errors.password?.message}
                       </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: "left", ml: 2 }}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            defaultUnchecked
+                            onChange={handlePasswordShow}
+                          />
+                        }
+                        label="Show password"
+                      />
                     </Box>
                     <Button
                       sx={{

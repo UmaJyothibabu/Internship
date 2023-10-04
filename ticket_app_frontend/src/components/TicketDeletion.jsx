@@ -72,7 +72,9 @@ const TicketDeletion = ({
     };
     // console.log(data);
     console.log(ticket._id);
-    if (notselectedSeats.length < ticket.seat_number.length) {
+    if (notselectedSeats.length === 0) {
+      alert("Select atleast a seat");
+    } else if (notselectedSeats.length < ticket.seat_number.length) {
       axios
         .put(`http://localhost:8000/api/ticket/${ticket._id}`, data, config)
         .then((response) => {

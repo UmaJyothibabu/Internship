@@ -85,27 +85,27 @@ const Navbar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          {props.page !== "home" ? (
-            <Typography
+          {/* {props.page !== "home" ? ( */}
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
+            <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+              Awesome Movies
+            </Link>
+          </Typography>
+          {/* ) : ( */}
+          {/* <Typography
               variant="h6"
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-                Awesome Movies
-              </Link>
-            </Typography>
-          ) : (
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              {/* <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+            > */}
+          {/* <Link to="/" style={{ color: "white", textDecoration: "none" }}>
             Awesome Movies
           </Link> */}
-            </Typography>
-          )}
+          {/* </Typography> */}
+          {/* )} */}
 
           {props.page === "home" && (
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
