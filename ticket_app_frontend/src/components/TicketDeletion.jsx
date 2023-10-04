@@ -76,7 +76,7 @@ const TicketDeletion = ({
       alert("Select atleast a seat");
     } else if (notselectedSeats.length < ticket.seat_number.length) {
       axios
-        .put(`http://localhost:8000/api/ticket/${ticket._id}`, data, config)
+        .put(`${API_URL}/ticket/${ticket._id}`, data, config)
         .then((response) => {
           if (response.data.message === "Seat cancellation successful") {
             alert(response.data.message);

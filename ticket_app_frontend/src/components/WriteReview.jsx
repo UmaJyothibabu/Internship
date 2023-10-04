@@ -47,7 +47,7 @@ const WriteReview = ({ token, username, userId, role }) => {
   useEffect(() => {
     if (token && role === "Customer") {
       axios
-        .get(`http://localhost:8000/api/movie`, config)
+        .get(`${API_URL}/movie`, config)
         .then((response) => {
           if (response.data.message === "No movies to show") {
             alert(response.data.message);
@@ -55,7 +55,7 @@ const WriteReview = ({ token, username, userId, role }) => {
             setMovies(response.data.movies);
             setImgUrl(response.data.imgUrl);
             axios
-              .get(`http://localhost:8000/api/ticket/${username}`, config)
+              .get(`${API_URL}/ticket/${username}`, config)
               .then((response) => {
                 if (response.data.message === "No bokkings yet") {
                   setShow(false);
@@ -111,7 +111,7 @@ const WriteReview = ({ token, username, userId, role }) => {
     data = { ...data, movie: movie._id, user: userId };
     console.log(data);
     axios
-      .post(`http://localhost:8000/api/reviews`, data, config)
+      .post(`${API_URL}/reviews`, data, config)
       .then((response) => {
         if (response.data.message === "You already reviewed the movie") {
           alert(response.data.message);

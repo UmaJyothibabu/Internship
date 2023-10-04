@@ -64,7 +64,7 @@ const Profile = ({ token, username, userId, role }) => {
   useEffect(() => {
     if (token && (role === "Admin" || role === "Customer")) {
       axios
-        .get(`http://localhost:8000/api/userlist/${userId}`, config)
+        .get(`${API_URL}/userlist/${userId}`, config)
         .then((response) => {
           console.log(response.data);
           setUser(response.data);
@@ -94,7 +94,7 @@ const Profile = ({ token, username, userId, role }) => {
 
     console.log(oldPassword);
     axios
-      .post(`http://localhost:8000/api/oldpassword`, oldPassword, config)
+      .post(`${API_URL}/oldpassword`, oldPassword, config)
       .then((response) => {
         if (response.data.message === "Correct Password") {
           setIsCorrect(true);
@@ -129,11 +129,7 @@ const Profile = ({ token, username, userId, role }) => {
     try {
       console.log(data.password);
       axios
-        .put(
-          `http://localhost:8000/api/updatepassword/${user._id}`,
-          data,
-          config
-        )
+        .put(`${API_URL}/updatepassword/${user._id}`, data, config)
         .then((response) => {
           if (response.data.message === "Password updated Successfully") {
             alert(response.data.message);

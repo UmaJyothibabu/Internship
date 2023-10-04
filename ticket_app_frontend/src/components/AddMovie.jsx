@@ -211,7 +211,7 @@ const AddMovie = ({ token, username, userId, role }) => {
       });
 
       axios
-        .post(`http://localhost:8000/api/movie`, formData, config)
+        .post(`${API_URL}/movie`, formData, config)
         .then((response) => {
           if (response.data.message === "Movie data added Successfully") {
             alert(response.data.message);

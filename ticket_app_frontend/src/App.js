@@ -8,7 +8,7 @@ import Admin from "./components/Admin";
 import Customer from "./components/Customer";
 import Sidebar from "./components/Sidebar";
 import BookTicket from "./components/BookTicket";
-import Test from "./components/Test";
+
 import { useEffect } from "react";
 import AddMovie from "./components/AddMovie";
 
@@ -23,7 +23,6 @@ function App() {
       <Route path="/buyticket" element={<BookTicket />} />
       <Route path="/dashboard" element={<Sidebar page="Dashboard" />} />
       <Route path="/addmovie" element={<Sidebar page="AddMovie" />} />
-      <Route path="/test" element={<Test />} />
     </Routes>
   );
 }

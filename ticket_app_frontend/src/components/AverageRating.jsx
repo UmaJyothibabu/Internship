@@ -22,7 +22,7 @@ const AverageRating = ({ token, username, userId, role, movie }) => {
   useEffect(() => {
     if (token && role === "Admin") {
       axios
-        .get(`http://localhost:8000/api/avgreview/${movie}`, config)
+        .get(`${API_URL}/avgreview/${movie}`, config)
         .then((response) => {
           setAvg(response.data);
         })

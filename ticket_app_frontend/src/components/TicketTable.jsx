@@ -69,7 +69,7 @@ const TicketTable = ({
       navigate("/login");
     } else {
       axios
-        .get(`http://localhost:8000/api/ticketcount/${movie._id}`, config)
+        .get(`${API_URL}/ticketcount/${movie._id}`, config)
         .then((response) => {
           if (response.data.message === "No bookings") {
             setBooked(false);

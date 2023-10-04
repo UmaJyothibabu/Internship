@@ -78,7 +78,7 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
     setLoading(true);
     if (token && role === "Customer") {
       axios
-        .get(`http://localhost:8000/api/movietickets/${movie._id}`, config)
+        .get(`${API_URL}/movietickets/${movie._id}`, config)
         .then((response) => {
           if (response.data.message === "No booking") {
             setBooked(false);
@@ -148,7 +148,7 @@ const BookTicket = ({ token, username, userId, role, movie }) => {
       console.log("ticket", ticket);
 
       axios
-        .post(`http://localhost:8000/api/movie/ticket`, ticket, config)
+        .post(`${API_URL}/movie/ticket`, ticket, config)
         .then((response) => {
           if (response.data.message === "Booking completed") {
             alert(response.data.message);

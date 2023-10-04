@@ -46,7 +46,7 @@ const Dashboard = ({ token, username, userId, role, name }) => {
   useEffect(() => {
     if (token && (role === "Admin" || role === "Customer")) {
       axios
-        .get(`http://localhost:8000/api/movie`, config)
+        .get(`${API_URL}/movie`, config)
         .then((response) => {
           if (response.data.message === "No movies to show") {
             alert(response.data.message);
@@ -82,7 +82,7 @@ const Dashboard = ({ token, username, userId, role, name }) => {
     setDeleted(false);
     axios
 
-      .delete(`http://localhost:8000/api/movie/${id}`, config)
+      .delete(`${API_URL}/movie/${id}`, config)
       .then((response) => {
         if (response.data.message === "Movie deleted successfully") {
           alert("Movie deleted successfully");

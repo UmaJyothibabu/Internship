@@ -84,7 +84,7 @@ const SignUp = () => {
     try {
       data = { ...data, role: "Customer" };
       axios
-        .post(`http://localhost:8000/api/signup`, data)
+        .post(`${API_URL}/signup`, data)
         .then((response) => {
           if (response.data.message === "Account created successfully") {
             alert(response.data.message);

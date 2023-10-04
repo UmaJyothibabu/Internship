@@ -72,7 +72,25 @@ router.delete("/movie/:id", auth, async (req, res) => {
   try {
     if (req.body.role === "Admin") {
       const { id } = req.params;
+      // Retrieve the movie data including the image file path
+      const movie = await movieData.findById(id);
+
+      if (!movie) {
+        return res.status(404).json({ message: "Movie not found" });
+      }
+
+      // Delete the image file if it exists
+      if (movie.image) {
+        const imagePath = path.join(__dirname, "uploads", movie.image);
+
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+
+      // Delete the movie record from the database
       await movieData.findByIdAndDelete(id);
+
       res.status(200).json({ message: "Movie deleted successfully" });
     } else {
       res.status(401).json({ message: "Access denied" });

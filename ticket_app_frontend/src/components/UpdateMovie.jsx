@@ -96,11 +96,7 @@ const UpdateMovie = ({
       console.log(updatedticket_rates);
 
       axios
-        .put(
-          `http://localhost:8000/api/movie/rate/${movie._id}`,
-          updatedticket_rates,
-          config
-        )
+        .put(`${API_URL}/movie/rate/${movie._id}`, updatedticket_rates, config)
         .then((response) => {
           if (response.data.message === "Ticket rate is updated") {
             alert(response.data.message);
@@ -127,11 +123,7 @@ const UpdateMovie = ({
       console.log(updatedTiming);
 
       axios
-        .put(
-          `http://localhost:8000/api/movie/time/${movie._id}`,
-          updatedTiming,
-          config
-        )
+        .put(`${API_URL}/movie/time/${movie._id}`, updatedTiming, config)
         .then((response) => {
           if (response.data.message === "Timing updated") {
             alert(response.data.message);

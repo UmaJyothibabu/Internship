@@ -72,7 +72,7 @@ const Login = () => {
   const formSubmit = (data) => {
     // console.log(data);
     try {
-      axios.post(`http://localhost:8000/api/login`, data).then((response) => {
+      axios.post(`${API_URL}/login`, data).then((response) => {
         if (response.data.message === "Login Successfully") {
           const token = response.data.token;
           const userId = response.data.data._id;

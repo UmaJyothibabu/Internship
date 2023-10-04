@@ -15,9 +15,14 @@ const MovieCards = () => {
   const [movielist, setMovieList] = useState([]);
   const [imgUrl, setImgUrl] = useState();
 
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_API_URL_PROD
+      : process.env.REACT_APP_API_URL_DEV;
+
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/movie`)
+      .get(`${API_URL}/movie`)
       .then((response) => {
         setMovieList(response.data.movies);
         setImgUrl(response.data.imgUrl);

@@ -7,6 +7,7 @@ const path = require("path");
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+app.use(express.static(path.join(__dirname, "/build")));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -32,6 +33,10 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
+});
 
 connectDB().then(() => {
   app.listen(PORT, () => {

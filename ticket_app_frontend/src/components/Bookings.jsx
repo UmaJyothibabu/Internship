@@ -40,7 +40,7 @@ const Bookings = ({ token, username, userId, role }) => {
     if (token && role === "Customer") {
       setLoading(true);
       axios
-        .get(`http://localhost:8000/api/ticket/${username}`, config)
+        .get(`${API_URL}/ticket/${username}`, config)
         .then((response) => {
           if (response.data.message === "No bokkings yet") {
             setBooked(false);
@@ -85,7 +85,7 @@ const Bookings = ({ token, username, userId, role }) => {
     setUpdate(false);
     // setFormOpen(true);
     axios
-      .delete(`http://localhost:8000/api/ticket/${ticket._id}`, config)
+      .delete(`${API_URL}/ticket/${ticket._id}`, config)
       .then((response) => {
         if (response.data.message === "Booking cancelled") {
           alert(response.data.message);

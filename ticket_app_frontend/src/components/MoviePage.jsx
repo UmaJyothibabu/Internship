@@ -63,7 +63,7 @@ const MoviePage = ({ token, username, userId, role, movie, name }) => {
     } else {
       setDeleteR(false);
       axios
-        .get(`http://localhost:8000/api/reviews/${movie._id}`, config)
+        .get(`${API_URL}/reviews/${movie._id}`, config)
         .then((response) => {
           if (response.data.message === "No one reviewed the movie") {
             console.log(response);
@@ -92,7 +92,7 @@ const MoviePage = ({ token, username, userId, role, movie, name }) => {
   const handleDeleteReview = (id) => {
     console.log(id);
     axios
-      .delete(`http://localhost:8000/api/reviewdelete/${id}/${userId}`, config)
+      .delete(`${API_URL}/reviewdelete/${id}/${userId}`, config)
       .then((response) => {
         if (response.data.message === "Review deleted successfully") {
           alert(response.data.message);
