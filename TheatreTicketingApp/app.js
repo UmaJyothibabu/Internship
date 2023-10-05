@@ -7,7 +7,7 @@ const path = require("path");
 require("dotenv").config();
 const mongoose = require("mongoose");
 
-app.use(express.static(path.join(__dirname, "/build")));
+// app.use(express.static(path.join(__dirname, "/build")));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -18,6 +18,7 @@ const PORT = process.env.PORT;
 const accountApi = require("./Routes/users");
 const customerApi = require("./Routes/customer");
 const adminApi = require("./Routes/admin");
+
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api", accountApi); //routes for login and sign up
@@ -34,9 +35,9 @@ const connectDB = async () => {
   }
 };
 
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "/build/index.html"));
-});
+// app.get("/*", function (req, res) {
+//   res.sendFile(path.join(__dirname, "/build/index.html"));
+// });
 
 connectDB().then(() => {
   app.listen(PORT, () => {

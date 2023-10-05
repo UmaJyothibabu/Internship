@@ -18,9 +18,9 @@ router.get("/movie", async (req, res) => {
     let movies = await movieData.find();
 
     if (movies.length !== 0) {
-      const imgUrl = `${req.protocol}://${req.get("host")}/`;
+      // const imgUrl = `${req.protocol}://${req.get("host")}/`;
 
-      res.status(200).json({ movies: movies, imgUrl: imgUrl });
+      res.status(200).json(movies);
     } else {
       res.status(200).json({ message: "No movies to show" });
     }
@@ -146,7 +146,7 @@ router.delete("/reviewdelete/:id/:userId", auth, async (req, res) => {
 });
 
 // send mail function
-const sendMail = async (ticket) => {
+const sendEmail = async (ticket) => {
   let { username, movie, seat_number, date, time, total_rate } = ticket;
 
   const movie_name = await movieData.findById(movie, { movie_name: 1, _id: 0 });
@@ -179,15 +179,13 @@ const sendMail = async (ticket) => {
     <p>Regards</p>
     <p>Awesome movies</p>`,
   };
-  transporter
-    .sendMail(message)
-    .then(() => {
-      console.log("message sent");
-    })
-    .catch((error) => {
-      console.log(error);
-      console.log("unable to send");
-    });
+  console.log("hi");
+  try {
+    const info = await transporter.sendMail(message);
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // ticket booking and email sending
@@ -213,7 +211,7 @@ router.post("/movie/ticket", auth, async (req, res) => {
 
       const newTicket = ticketData(req.body);
       const savedData = await newTicket.save();
-      sendMail(req.body);
+      await sendEmail(req.body);
       res.status(200).json({ message: "Booking completed" });
     } else {
       res.status(401).json({ message: "Access denied" });

@@ -13,7 +13,7 @@ import axios from "axios";
 
 const MovieCards = () => {
   const [movielist, setMovieList] = useState([]);
-  const [imgUrl, setImgUrl] = useState();
+  // const [imgUrl, setImgUrl] = useState();
 
   const API_URL =
     process.env.NODE_ENV === "production"
@@ -24,8 +24,8 @@ const MovieCards = () => {
     axios
       .get(`${API_URL}/movie`)
       .then((response) => {
-        setMovieList(response.data.movies);
-        setImgUrl(response.data.imgUrl);
+        setMovieList(response.data);
+        // setImgUrl(response.data.imgUrl);
         // if(response.data.message==="")
       })
       .catch((error) => {
@@ -52,7 +52,7 @@ const MovieCards = () => {
                     component="img"
                     alt={val.movie_name}
                     height="450"
-                    image={imgUrl + val.image}
+                    image={val.image}
                   />
                   <Button
                     size="small"

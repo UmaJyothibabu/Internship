@@ -110,7 +110,7 @@ const AddMovie = ({ token, username, userId, role }) => {
     // Step 2 Initial Values
     description: "",
     cast: [{ actor: "", role: "" }],
-    image: null,
+    image: "",
 
     // Step 3 Initial Values
     ticket_rates: "",
@@ -152,12 +152,11 @@ const AddMovie = ({ token, username, userId, role }) => {
               role: yup.string().required("Role is required"),
             })
           ),
-          image: yup.mixed().test("fileType", "Invalid file type", (value) => {
-            if (!value) return true; // No file selected, so it's valid
-            return ["image/jpeg", "image/png", "image/jpg"].includes(
-              value.type
-            );
-          }),
+          image: yup
+            .string()
+
+            .url("Invalid URL format")
+            .required("Poster URL is required"),
         });
       case 2:
         return yup.object().shape({
@@ -186,32 +185,72 @@ const AddMovie = ({ token, username, userId, role }) => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const handleSubmit = (values) => {
+  // const uploadFile = async (image, timestamp, signature) => {
+  //   const folder = "AwesomeMovies";
+
+  //   const data = new FormData();
+  //   data.append("file", image);
+  //   data.append("timestamp", timestamp);
+  //   data.append("signature", signature);
+  //   data.append("api_key", process.env.REACT_APP_CLOUDINARY_API_KEY);
+  //   data.append("folder", folder);
+
+  //   try {
+  //     let cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+  //     // console.log(cloudName);
+  //     let resourceType = "image";
+  //     let api = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
+
+  //     const res = await axios.post(api, data);
+  //     const { secure_url } = res.data;
+  //     console.log(secure_url);
+  //     return secure_url;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const getSignatureForUpload = async (folder) => {
+  //   try {
+  //     // console.log("HI");
+  //     const res = await axios.post(`${API_URL}/sign_upload`, { folder });
+  //     // console.log(res);
+  //     return res.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const handleSubmit = async (values) => {
     if (activeStep === steps.length - 1) {
       // Final step, handle form submission here
-      // const languages = values.languages.split(",").map((lang) => lang.trim());
-      // const genre = values.genre.split(",").map((gen) => gen.trim());
 
-      const formData = new FormData();
-      formData.append("image", values.image);
-      formData.append("movie_name", values.movie_name);
-      formData.append("category", values.category);
-      formData.append("languages", JSON.stringify(values.languages));
-      formData.append("genre", JSON.stringify(values.genre));
-      formData.append("duration", values.duration);
-      formData.append("description", values.description);
-      formData.append("cast", JSON.stringify(values.cast));
-      formData.append("ticket_rates", values.ticket_rates);
-      formData.append("seat_count", values.seat_count);
-      formData.append("timing", values.timing);
-      formData.append("start_date", values.start_date);
-      formData.append("end_date", values.end_date);
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
-
+      // Get signature for Image upload
+      // const { timestamp: imgTimestamp, signature: imgSignature } =
+      //   await getSignatureForUpload("AwesomeMovies");
+      // console.log(values.image);
+      // const imgUrl = await uploadFile(values.image, imgTimestamp, imgSignature);
+      // console.log(imgUrl);
+      // const formData = new FormData();
+      // formData.append("image", values.image);
+      // formData.append("movie_name", values.movie_name);
+      // formData.append("category", values.category);
+      // formData.append("languages", JSON.stringify(values.languages));
+      // formData.append("genre", JSON.stringify(values.genre));
+      // formData.append("duration", values.duration);
+      // formData.append("description", values.description);
+      // formData.append("cast", JSON.stringify(values.cast));
+      // formData.append("ticket_rates", values.ticket_rates);
+      // formData.append("seat_count", values.seat_count);
+      // formData.append("timing", values.timing);
+      // formData.append("start_date", values.start_date);
+      // formData.append("end_date", values.end_date);
+      // formData.forEach((value, key) => {
+      //   console.log(key, value);
+      // });
+      // values = { ...values, image: imgUrl };
       axios
-        .post(`${API_URL}/movie`, formData, config)
+        .post(`${API_URL}/movie`, values, config)
         .then((response) => {
           if (response.data.message === "Movie data added Successfully") {
             alert(response.data.message);
@@ -226,6 +265,7 @@ const AddMovie = ({ token, username, userId, role }) => {
             alert(error.response.data.message);
             navigate("/login");
           } else {
+            console.log(error.message);
             alert("Something went wrong");
             window.location.reload();
           }
@@ -520,35 +560,25 @@ const AddMovie = ({ token, username, userId, role }) => {
                         </Grid>
                       </Grid>
                       <Grid item xs={12} textAlign={"center"}>
-                        <input
-                          name="image"
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          id="image-upload"
-                          type="file"
-                          onChange={(event) => {
-                            console.log(event.currentTarget.files[0]);
-                            // Set the value of the 'image' field in Formik
-                            setFieldValue(
-                              "image",
-                              event.currentTarget.files[0]
-                            );
-                          }}
+                        <Field
+                          name="image" // Update field name to posterURL
+                          as={TextField}
+                          label="Poster URL" // Update label
+                          variant="outlined"
+                          fullWidth
+                          type="url" // Use type "url" for URL validation
                         />
-                        <label htmlFor="image-upload">
-                          <Button
-                            variant="contained"
-                            component="span"
-                            color="primary"
-                          >
-                            Upload poster
-                          </Button>
-                        </label>
-                        <ErrorMessage
-                          name="image"
-                          component="div"
-                          className="error"
-                        />
+                        <Box pl={3}>
+                          {touched.posterURL && errors.posterURL ? (
+                            <Typography
+                              variant="body2"
+                              color="error"
+                              gutterBottom
+                            >
+                              {errors.posterURL}
+                            </Typography>
+                          ) : null}
+                        </Box>
                       </Grid>
                     </>
                   )}

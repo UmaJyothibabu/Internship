@@ -28,7 +28,7 @@ const Dashboard = ({ token, username, userId, role, name }) => {
   // const [avg, setAvg] = useState();
   let [openDialogue, setOpenDialogue] = useState(false);
   const [updateMovie, setUpdateMovie] = useState({});
-  const [imgUrl, setImgUrl] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
 
   const navigate = useNavigate();
   const API_URL =
@@ -51,8 +51,8 @@ const Dashboard = ({ token, username, userId, role, name }) => {
           if (response.data.message === "No movies to show") {
             alert(response.data.message);
           } else {
-            setMovies(response.data.movies);
-            setImgUrl(response.data.imgUrl);
+            setMovies(response.data);
+            // setImgUrl(response.data.imgUrl);
           }
           setLoading(false);
         })
@@ -133,7 +133,7 @@ const Dashboard = ({ token, username, userId, role, name }) => {
           username={username}
           userId={userId}
           role={role}
-          movie={{ ...singleMovie, imgUrl: imgUrl }}
+          movie={singleMovie}
           name={name}
           // imgurl={imgUrl}
         />
@@ -197,7 +197,7 @@ const Dashboard = ({ token, username, userId, role, name }) => {
                         }}
                       >
                         <img
-                          src={imgUrl + val.image}
+                          src={val.image}
                           alt={val.movie_name}
                           style={{
                             width: "100%",

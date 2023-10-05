@@ -130,11 +130,7 @@ const MoviePage = ({ token, username, userId, role, movie, name }) => {
             spacing={0}
           >
             <Grid item xs={11} sm={10} md={4} lg={4}>
-              <img
-                src={movie.imgUrl + movie.image}
-                alt={movie.movie_name}
-                height="350px"
-              />
+              <img src={movie.image} alt={movie.movie_name} height="350px" />
             </Grid>
             <Grid
               item

@@ -13,46 +13,23 @@ const movieData = require("../Models/movie");
 const userData = require("../Models/user");
 const reviewData = require("../Models/review");
 const ticketData = require("../Models/ticket");
-
+// const cloudinary = require("cloudinary").v2;
 const baseUrl = process.env.BASE_URL || "http://localhost:8000";
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-// const destinationPath = path.resolve(__dirname, "../uploads");
 
-// // Check if the directory exists, and create it if not
-// if (!fs.existsSync(destinationPath)) {
-//   fs.mkdirSync(destinationPath, { recursive: true });
-// }
+// // adding new movies
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/"); // Specify the destination folder where uploaded files will be stored
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Define the file name for uploaded files
-  },
-});
-
-const upload = multer({ storage: storage });
-// adding new movies
-
-router.post("/movie", upload.single("image"), auth, async (req, res) => {
+router.post("/movie", auth, async (req, res) => {
   try {
-    // console.log(req.body.role);
     if (req.body.role === "Admin") {
-      // console.log(req.body);
+      // // Now you can use result.secure_url as the image URL
+      // req.body.image = result.secure_url;
+      // req.body.cast = JSON.parse(req.body.cast);
+      // req.body.languages = JSON.parse(req.body.languages);
+      // req.body.genre = JSON.parse(req.body.genre);
 
-      // Access the uploaded file details via req.file
-      if (!req.file) {
-        return res.status(400).json({ message: "No image file received" });
-      }
-      // const webImagePath = imagePathFromDB.replace(/\\/g, '/');
-      const imagePath = req.file.path.replace(/\\/g, "/");
-      req.body.image = imagePath;
-      req.body.cast = JSON.parse(req.body.cast);
-      req.body.languages = JSON.parse(req.body.languages);
-      req.body.genre = JSON.parse(req.body.genre);
       console.log(req.body);
       const newMovie = movieData(req.body);
 
@@ -63,7 +40,7 @@ router.post("/movie", upload.single("image"), auth, async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Unable  add movie data" });
+    res.status(500).json({ message: "Unable to add movie data" });
   }
 });
 

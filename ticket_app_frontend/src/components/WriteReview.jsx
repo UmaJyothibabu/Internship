@@ -42,7 +42,7 @@ const WriteReview = ({ token, username, userId, role }) => {
     },
   };
 
-  const [imgUrl, setImgUrl] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
   // loading info from db when the page loads
   useEffect(() => {
     if (token && role === "Customer") {
@@ -52,8 +52,8 @@ const WriteReview = ({ token, username, userId, role }) => {
           if (response.data.message === "No movies to show") {
             alert(response.data.message);
           } else {
-            setMovies(response.data.movies);
-            setImgUrl(response.data.imgUrl);
+            setMovies(response.data);
+            // setImgUrl(response.data.imgUrl);
             axios
               .get(`${API_URL}/ticket/${username}`, config)
               .then((response) => {
@@ -230,7 +230,7 @@ const WriteReview = ({ token, username, userId, role }) => {
                             }}
                           >
                             <img
-                              src={imgUrl + val.image}
+                              src={val.image}
                               alt={val.movie_name}
                               style={{
                                 width: "100%",
