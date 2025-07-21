@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 
 const accountApi = require("./Routes/users");
 const customerApi = require("./Routes/customer");
