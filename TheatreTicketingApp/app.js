@@ -7,7 +7,7 @@ const path = require("path");
 require("dotenv").config();
 const mongoose = require("mongoose");
 
-// app.use(express.static(path.join(__dirname, "/build")));
+app.use(express.static(path.join(__dirname, "/build")));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
