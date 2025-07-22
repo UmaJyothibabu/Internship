@@ -35,9 +35,9 @@ const connectDB = async () => {
   }
 };
 
-// app.get("/*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "/build/index.html"));
-// });
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
+});
 
 connectDB().then(() => {
   app.listen(PORT, () => {
